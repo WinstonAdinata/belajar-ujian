@@ -1333,6 +1333,11 @@ function loadScript(src){
 }
 (async function boot(){
   loadState();
+  /* Progres awal (opsional): dipakai hanya bila browser ini belum punya progres sama sekali. */
+  await loadScript('bank/seed-progress.js');
+  if (window.SEED_STATE && !Object.keys(S.mcq).length && !Object.keys(S.cards).length && !Object.keys(S.essay).length && !Object.keys(S.materi).length){
+    S = Object.assign(freshState(), window.SEED_STATE); save();
+  }
   timerBoot();
   drawTimer();
   let ok = await loadScript('bank/manifest.js');
