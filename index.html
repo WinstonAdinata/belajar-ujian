@@ -1,0 +1,1353 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belajar Ujian</title>
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --surface2:#efede7; --ink:#1d2330; --muted:#5d6577; --line:#dcd9cf;
+  --accent:#2f5d8a; --accent-ink:#ffffff; --accent-soft:#e3ecf5;
+  --ok:#1f7a4d; --ok-soft:#dff3e8; --bad:#b3372f; --bad-soft:#f9e1de; --warn:#9a6a00; --warn-soft:#fbf0d3;
+  --radius:12px; --shadow:0 1px 2px rgba(20,25,40,.06),0 4px 14px rgba(20,25,40,.05);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#14171d; --surface:#1c212b; --surface2:#242a36; --ink:#e8eaf0; --muted:#98a1b3; --line:#323a4a;
+    --accent:#7fb0e0; --accent-ink:#10161f; --accent-soft:#223247;
+    --ok:#5fcf9a; --ok-soft:#1b3a2b; --bad:#f09088; --bad-soft:#40211f; --warn:#e5b94f; --warn-soft:#3b3015;
+    --shadow:none;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+header.top{position:sticky;top:0;z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:980px;margin:0 auto;padding:10px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.2px;margin-right:6px}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav button{background:none;border:0;color:var(--muted);font:inherit;padding:7px 12px;border-radius:8px;cursor:pointer}
+nav button:hover{background:var(--surface2);color:var(--ink)}
+nav button[aria-current="page"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+main{max-width:980px;margin:0 auto;padding:22px 16px 70px}
+h1{font-size:1.5rem;margin:0 0 4px}
+h2{font-size:1.15rem;margin:26px 0 10px}
+h3{font-size:1rem;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.g3{grid-template-columns:repeat(3,1fr)}
+.stat .n{font-size:1.9rem;font-weight:700;line-height:1.1}
+.stat .l{color:var(--muted);font-size:.85rem}
+.btn{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:9px 16px;border-radius:9px;cursor:pointer}
+.btn:hover{background:var(--surface2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.small{padding:5px 11px;font-size:.88rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sp{flex:1}
+.bar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.bar.ok>i{background:var(--ok)}
+.chip{display:inline-block;font-size:.78rem;padding:2px 9px;border-radius:99px;background:var(--surface2);color:var(--muted);border:1px solid var(--line)}
+.chip.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.chip.bad{background:var(--bad-soft);color:var(--bad);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.muted{color:var(--muted)}
+label.field{display:block;margin:12px 0 4px;font-weight:600;font-size:.92rem}
+select,input[type=number],textarea{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:8px 10px;width:100%;max-width:100%}
+textarea{min-height:160px;resize:vertical}
+.topics{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));margin-top:6px}
+.topic{display:flex;gap:9px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface);cursor:pointer}
+.topic input{margin:0}
+.qtext{font-size:1.12rem;font-weight:600;margin:6px 0 14px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;margin:0 0 9px;cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--accent);background:var(--accent-soft)}
+.opt .k{flex:0 0 26px;height:26px;border-radius:7px;background:var(--surface2);display:grid;place-items:center;font-weight:700;font-size:.85rem;color:var(--muted)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.sel .k{background:var(--accent);color:var(--accent-ink)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.right .k{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);color:#fff}
+.opt[disabled]{cursor:default}
+.explain{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--surface2);border-left:4px solid var(--accent)}
+.explain.ok{border-left-color:var(--ok)}
+.explain.bad{border-left-color:var(--bad)}
+.prog{margin:0 0 14px}
+.fcard{min-height:230px;display:grid;place-items:center;text-align:center;padding:26px;cursor:pointer;user-select:none;font-size:1.2rem}
+.fcard .tag{position:absolute;top:10px;left:14px}
+.fcard-wrap{position:relative}
+.fcard .back{font-size:1.05rem;text-align:left;white-space:pre-wrap}
+.rate{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.rate button{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 6px;border-radius:10px;cursor:pointer}
+.rate button small{display:block;color:var(--muted)}
+.rate button:hover{border-color:var(--accent);background:var(--accent-soft)}
+.pal{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.pal button{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.pal button.ans{background:var(--accent-soft);border-color:var(--accent)}
+.pal button.flag{box-shadow:inset 0 -4px 0 var(--warn)}
+.pal button.cur{outline:2px solid var(--accent);outline-offset:1px}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;padding:5px 12px;border-radius:9px;background:var(--surface2)}
+.timer.low{background:var(--bad-soft);color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+.chart{display:flex;align-items:flex-end;gap:5px;height:70px}
+.chart div{flex:1;background:var(--accent);border-radius:4px 4px 0 0;min-height:3px;opacity:.85}
+.chart div.z{background:var(--surface2);opacity:1}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.modal-bg{position:fixed;inset:0;background:rgba(10,14,22,.55);display:grid;place-items:center;z-index:20;padding:16px}
+.modal{background:var(--surface);border-radius:14px;padding:22px;max-width:420px;width:100%;border:1px solid var(--line)}
+.notice{padding:10px 14px;border-radius:10px;background:var(--warn-soft);color:var(--warn);margin:0 0 16px;font-size:.92rem}
+.ea{display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding:16px 20px;border-radius:var(--radius);background:var(--accent-soft);border:1px solid var(--line);margin:0 0 16px}
+.ea.warn{background:var(--warn-soft);border-color:transparent}
+.ea.bad{background:var(--bad-soft);border-color:transparent}
+.tk{margin:0 0 12px}.tk.done{opacity:.6}.tk h3{margin:6px 0}.tk ol,.tk ul{margin:6px 0 10px;padding-left:22px}.tk li{margin:3px 0}.tk .lbl{font-weight:700;margin:12px 0 2px;font-size:.9rem}
+.tk-chk{display:flex;gap:8px;align-items:center;cursor:pointer}
+.ea .cd{text-align:center;min-width:96px}
+.ea .big{font-size:2.5rem;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums;color:var(--accent)}
+.ea.warn .big{color:var(--warn)}
+.ea.bad .big{color:var(--bad)}
+.ea .unit{font-size:.85rem;color:var(--muted)}
+.ea .info{flex:1;min-width:220px}
+.ea .info h2{margin:0 0 2px;font-size:1.05rem}
+.ea .info p{margin:2px 0}
+.stimer{display:flex;align-items:center;gap:8px;margin-left:auto}
+.stimer .tval{font-variant-numeric:tabular-nums;font-weight:700;padding:5px 12px;border-radius:9px;background:var(--surface2)}
+.stimer.on .tval{background:var(--accent-soft);color:var(--accent)}
+.stimer .tdot{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.stimer.on .tdot{background:var(--ok)}
+.stimer .tnote{font-size:.8rem}
+@media (prefers-reduced-motion:no-preference){.stimer.on .tdot{animation:pulse 1.6s ease-in-out infinite}@keyframes pulse{50%{opacity:.35}}}
+@media (max-width:560px){.stimer{margin-left:0;width:100%}.ea .big{font-size:2rem}.g3{grid-template-columns:repeat(2,1fr)}}
+details.rv{border:1px solid var(--line);border-radius:10px;margin:0 0 8px;background:var(--surface)}
+details.rv summary{cursor:pointer;padding:10px 14px;display:flex;gap:10px;align-items:center}
+details.rv .in{padding:0 14px 14px}
+.md h2{font-size:1.2rem;margin:24px 0 8px}.md h3{font-size:1.05rem;margin:18px 0 6px}.md h4{font-size:1rem;margin:14px 0 4px}
+.md p{margin:8px 0}.md ul,.md ol{margin:6px 0 10px;padding-left:22px}.md li{margin:3px 0}
+.md code{background:var(--surface2);padding:1px 6px;border-radius:5px;font-size:.92em}
+.md pre{background:var(--surface2);padding:12px;border-radius:9px;overflow:auto}
+.md hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.md a.wl{color:var(--accent);text-decoration:underline;cursor:pointer}
+.fig{margin:14px 0;text-align:center}.fig img{max-width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:zoom-in}.fig .cap{font-size:.85rem;color:var(--muted,#8b93a1);margin-top:6px}
+.tw{overflow-x:auto;margin:10px 0}
+.md .explain>.md>:first-child{margin-top:0}.md .explain>.md>:last-child{margin-bottom:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:560px){.rate{grid-template-columns:repeat(2,1fr)} h1{font-size:1.3rem}}
+@media (prefers-reduced-motion:no-preference){.bar>i{transition:width .4s}}
+/* ===== Tema berwarna (override) ===== */
+:root{
+  --bg:#f5f4fb; --surface:#ffffff; --surface2:#efeef8; --ink:#1b1f33; --muted:#5f6684; --line:#dedcee;
+  --accent:#5b4fe0; --accent2:#e0568f; --accent-soft:#e9e7fb; --accent-ink:#ffffff;
+  --ok:#14866a; --ok-soft:#d9f3ea; --bad:#cf3a55; --bad-soft:#fde4ea; --warn:#b36b00; --warn-soft:#fdeccb;
+  --radius:14px; --cl:42%;
+  --shadow:0 1px 2px rgba(60,50,140,.06),0 8px 24px rgba(60,50,140,.08);
+  --grad:linear-gradient(135deg,#5b4fe0 0%,#8b5cf6 55%,#e0568f 100%);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1120; --surface:#181b30; --surface2:#20243d; --ink:#eceefb; --muted:#9aa1c4; --line:#2c3152;
+    --accent:#9a8cff; --accent2:#ff7eb0; --accent-soft:#272a52; --accent-ink:#10112a;
+    --ok:#4fdcb1; --ok-soft:#133a33; --bad:#ff8ca3; --bad-soft:#42202c; --warn:#f2c05c; --warn-soft:#3b2f12;
+    --cl:68%; --shadow:0 1px 0 rgba(255,255,255,.03),0 8px 24px rgba(0,0,0,.35);
+    --grad:linear-gradient(135deg,#7c6cff 0%,#a78bfa 55%,#ff7eb0 100%);
+  }
+}
+body{background:radial-gradient(900px 480px at 8% -8%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 60%),radial-gradient(760px 420px at 100% 0,color-mix(in srgb,var(--accent2) 13%,transparent),transparent 62%),var(--bg);background-attachment:fixed}
+header.top{background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky}
+header.top::before{content:"";display:block;height:3px;background:var(--grad)}
+.brand{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;font-size:1.08rem}
+nav button{border-radius:999px;padding:7px 14px;transition:background .15s,color .15s}
+nav button:hover{background:var(--accent-soft);color:var(--accent)}
+nav button[aria-current="page"]{background:var(--grad);color:#fff;font-weight:600;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 35%,transparent)}
+h1{font-size:1.7rem;font-weight:800;letter-spacing:-.01em}
+h1::after{content:"";display:block;width:46px;height:4px;border-radius:99px;background:var(--grad);margin-top:7px}
+.card{border-radius:var(--radius);border:1px solid var(--line);transition:transform .15s,box-shadow .15s}
+.card:hover{box-shadow:var(--shadow),0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
+.btn{border-radius:10px;transition:background .15s,border-color .15s,transform .05s}
+.btn:hover{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--accent) 32%,transparent)}
+.btn.primary:hover{filter:brightness(1.06);background:var(--grad)}
+.bar>i{background:var(--grad)}
+.chip{border-radius:999px}
+.chip.cc{background:color-mix(in srgb,var(--cc) 14%,transparent);color:var(--cc);border-color:color-mix(in srgb,var(--cc) 30%,transparent);font-weight:600}
+.card.cc{border-top:3px solid var(--cc)}
+.card.cc h3{color:var(--cc)}
+.stat{position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--sc,var(--accent))}
+.grid>.stat:nth-child(1){--sc:#5b4fe0}.grid>.stat:nth-child(2){--sc:#14a37f}.grid>.stat:nth-child(3){--sc:#e0568f}
+.grid>.stat:nth-child(4){--sc:#e08a1a}.grid>.stat:nth-child(5){--sc:#2d8ae0}.grid>.stat:nth-child(6){--sc:#9b59d9}
+.stat .n{color:var(--sc,var(--ink));font-weight:800}
+.ea{border:0;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),color-mix(in srgb,var(--accent2) 12%,var(--surface)));box-shadow:var(--shadow)}
+.ea.warn{background:linear-gradient(135deg,color-mix(in srgb,#f0a31a 24%,var(--surface)),color-mix(in srgb,#f0a31a 8%,var(--surface)))}
+.ea.bad{background:linear-gradient(135deg,color-mix(in srgb,#e0485f 24%,var(--surface)),color-mix(in srgb,#e0485f 7%,var(--surface)))}
+.ea .big{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ea.warn .big{background:none;color:var(--warn)}.ea.bad .big{background:none;color:var(--bad)}
+.opt{border-radius:12px;transition:border-color .12s,background .12s,transform .08s}
+.opt:hover:not([disabled]){transform:translateX(2px)}
+.opt .k{border-radius:8px}
+.explain{border-left-color:var(--accent2)}
+.fcard{border-radius:18px;background:linear-gradient(160deg,var(--surface),color-mix(in srgb,var(--accent) 9%,var(--surface)));border:1px solid color-mix(in srgb,var(--accent) 22%,var(--line))}
+.rate button:nth-child(1):hover{border-color:var(--bad);background:var(--bad-soft)}
+.rate button:nth-child(2):hover{border-color:var(--warn);background:var(--warn-soft)}
+.rate button:nth-child(3):hover{border-color:var(--accent);background:var(--accent-soft)}
+.rate button:nth-child(4):hover{border-color:var(--ok);background:var(--ok-soft)}
+.chart div{background:var(--grad);opacity:.9}.chart div.z{background:var(--surface2)}
+.stimer.on .tval{background:var(--grad);color:#fff}
+.md h2{color:var(--accent);padding-bottom:4px;border-bottom:2px solid color-mix(in srgb,var(--accent) 22%,transparent)}
+.md h3{color:var(--accent2)}
+.md table th{background:var(--accent-soft);color:var(--accent)}
+.md .explain{border-left-color:var(--accent)}
+details.rv{border-radius:12px}
+.pal button.ans{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.tk{border-left:4px solid var(--cc,var(--accent))}
+.tk .lbl{color:var(--cc,var(--accent))}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <span class="brand">Belajar Ujian</span>
+  <nav id="nav"></nav>
+  <div id="studytimer" class="stimer"></div>
+</div></header>
+<main id="app"><p class="muted">Memuat bank soal...</p></main>
+
+<script>
+"use strict";
+/* ================= Util ================= */
+const BANKS = [];
+function registerBank(b){ BANKS.push(b); }
+const $ = (s, r=document) => r.querySelector(s);
+/* replaceChildren/append: ratakan array dan abaikan null/false */
+['replaceChildren','append'].forEach(m => {
+  const orig = Element.prototype[m];
+  Element.prototype[m] = function(...k){
+    if (m === 'replaceChildren'){
+      const a = document.activeElement;
+      if (a && a !== document.body && this.contains(a)) a.blur();
+    }
+    return orig.apply(this, k.flat(Infinity).filter(x => x != null && x !== false));
+  };
+});
+function h(tag, props, ...kids){
+  const e = document.createElement(tag);
+  if (props) for (const [k,v] of Object.entries(props)){
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'value' || k === 'checked' || k === 'disabled') e[k] = v;
+    else if (v === true) e.setAttribute(k, '');
+    else e.setAttribute(k, v);
+  }
+  for (const k of kids.flat(Infinity)){
+    if (k == null || k === false) continue;
+    e.append(k.nodeType ? k : document.createTextNode(String(k)));
+  }
+  return e;
+}
+function shuffle(a){ for (let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+const DAY = 864e5;
+const dkey = (t=Date.now()) => new Date(t).toLocaleDateString('en-CA');
+const pct = (a,b) => b ? Math.round(a*100/b) : 0;
+const LET = ['A','B','C','D','E','F'];
+
+/* ================= State / storage ================= */
+const KEY = 'belajar-ujian.v1';
+let storageOK = true;
+function freshState(){ return { mcq:{}, cards:{}, essay:{}, materi:{}, exams:[], days:{}, newToday:{date:'',count:0}, settings:{newPerDay:20}, exported:0, studyMs:{}, tasks:{}, timer:{running:false,acc:0,t:0,auto:false} }; }
+let S = freshState();
+function loadState(){
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) S = Object.assign(freshState(), JSON.parse(raw));
+    fixTimer();
+  } catch(e){ storageOK = false; }
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ storageOK = false; } }
+function bumpDay(){ const k = dkey(); S.days[k] = (S.days[k]||0) + 1; }
+
+/* ================= Data model ================= */
+const COURSE_META = []; function registerCourses(a){ COURSE_META.push(...a); }
+const MATERI = []; function registerMateri(a){ MATERI.push(...a); }
+const TASKS = []; function registerTasks(a){ TASKS.push(...a); }
+const ALL_KEY = '*', ALL_LABEL = 'Semua mata kuliah';
+let COURSES = {}, ALL = null;
+function newCourse(name, meta){ return { name, key:name, meta:meta||null, mcq:[], cards:[], essay:[], materi:[] }; }
+function buildCourses(){
+  COURSES = {}; ALL = null;
+  for (const m of COURSE_META) COURSES[m.name] = newCourse(m.name, m);
+  for (const b of BANKS){
+    const c = COURSES[b.course] || (COURSES[b.course] = newCourse(b.course));
+    for (const q of (b.mcq||[])) c.mcq.push(Object.assign({session:b.session, course:b.course}, q));
+    for (const f of (b.flashcards||[])) c.cards.push(Object.assign({session:b.session, course:b.course}, f));
+    for (const e of (b.essay||[])) c.essay.push(Object.assign({session:b.session, course:b.course}, e));
+  }
+  for (const m of MATERI){
+    const c = COURSES[m.course] || (COURSES[m.course] = newCourse(m.course));
+    c.materi.push(m);
+  }
+  for (const c of Object.values(COURSES)) c.materi.sort((a,b)=>(a.order||0)-(b.order||0));
+}
+const courseNames = () => Object.keys(COURSES);
+const hasContent = c => c.mcq.length || c.cards.length || c.essay.length;
+function getCourse(key){
+  if (key !== ALL_KEY) return COURSES[key];
+  if (!ALL){
+    ALL = newCourse(ALL_LABEL); ALL.key = ALL_KEY;
+    for (const c of Object.values(COURSES)){
+      const pre = t => c.name + ' \u203a ' + t;
+      for (const q of c.mcq) ALL.mcq.push(Object.assign({}, q, {topic:pre(q.topic)}));
+      for (const k of c.cards) ALL.cards.push(Object.assign({}, k, {topic:pre(k.topic)}));
+      for (const e of c.essay) ALL.essay.push(Object.assign({}, e, {topic:pre(e.topic)}));
+    }
+  }
+  return ALL;
+}
+const studyNames = () => {
+  const n = courseNames().filter(k => hasContent(COURSES[k]));
+  return courseNames().length >= 2 ? [ALL_KEY, ...n] : n;
+};
+const defaultCourse = () => courseNames().find(k => hasContent(COURSES[k])) || courseNames()[0];
+const cLabel = k => k === ALL_KEY ? ALL_LABEL : k;
+const daysTo = d => Math.round((new Date(d + 'T00:00:00') - new Date(dkey() + 'T00:00:00')) / DAY);
+const dateID = d => new Date(d + 'T00:00:00').toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short'});
+const topicsOf = (items) => { const m = {}; for (const i of items){ m[i.topic] = (m[i.topic]||0)+1; } return m; };
+
+function recordMcq(id, ok){
+  const s = S.mcq[id] || (S.mcq[id] = {n:0,c:0});
+  s.n++; if (ok) s.c++; s.last = Date.now(); s.lastOk = ok; bumpDay();
+}
+function weakScore(q){
+  const s = S.mcq[q.id];
+  if (!s) return 1;
+  const acc = s.c / s.n;
+  return s.lastOk ? (1-acc)*0.8 : 1.5-acc;
+}
+
+/* spaced repetition (SM-2 sederhana) */
+function sched(card, r){
+  const c = card ? Object.assign({}, card) : { ease:2.5, interval:0, reps:0, lapses:0 };
+  if (r === 0){
+    c.lapses++; c.reps = 0; c.interval = 0; c.ease = Math.max(1.3, c.ease - 0.2); c.due = Date.now() + 10*60e3;
+  } else {
+    let iv;
+    if (c.reps === 0) iv = [0,1,2,4][r];
+    else {
+      const f = r === 1 ? 1.2 : r === 2 ? c.ease : c.ease*1.3;
+      iv = Math.max(c.interval + 1, Math.round(c.interval * f));
+    }
+    if (r === 1) c.ease = Math.max(1.3, c.ease - 0.15);
+    if (r === 3) c.ease = c.ease + 0.15;
+    c.reps++; c.interval = Math.max(1, iv); c.due = Date.now() + c.interval * DAY;
+  }
+  return c;
+}
+function fmtIv(r, card){
+  if (r === 0) return '10 mnt';
+  const d = sched(card, r).interval;
+  return d >= 60 ? Math.round(d/30) + ' bln' : d + ' hr';
+}
+function newLeftToday(){
+  const t = dkey();
+  if (S.newToday.date !== t) S.newToday = { date:t, count:0 };
+  return Math.max(0, S.settings.newPerDay - S.newToday.count);
+}
+
+/* ================= UI helpers ================= */
+let cleanup = null, keyHandler = null, leaveGuard = null;
+function mount(node){ $('#app').replaceChildren(node); window.scrollTo(0,0); }
+function ask(msg, okLabel='Ya', cancelLabel='Batal'){
+  return new Promise(res => {
+    const done = v => { bg.remove(); res(v); };
+    const bg = h('div',{class:'modal-bg',role:'dialog','aria-modal':'true'},
+      h('div',{class:'modal'}, h('p',{style:'margin-top:0'},msg),
+        h('div',{class:'row',style:'justify-content:flex-end'},
+          h('button',{class:'btn',onclick:()=>done(false)},cancelLabel),
+          h('button',{class:'btn primary',onclick:()=>done(true)},okLabel))));
+    document.body.append(bg);
+    $('.btn.primary',bg).focus();
+  });
+}
+function bar(p, cls=''){ return h('div',{class:'bar '+cls},h('i',{style:`width:${Math.max(0,Math.min(100,p))}%`})); }
+function accChip(a, n){
+  if (!n) return h('span',{class:'chip'},'belum dicoba');
+  return h('span',{class:'chip '+(a>=80?'ok':a>=60?'warn':'bad')}, a+'% ('+n+'x)');
+}
+function courseSelect(value, onchange, list){
+  const names = list || studyNames();
+  return h('select',{onchange:e=>onchange(e.target.value),'aria-label':'Mata kuliah'},
+    names.map(n=>h('option',{value:n,selected:n===value},cLabel(n))));
+}
+
+/* ================= Router ================= */
+const ROUTES = [
+  ['', 'Dashboard', viewDashboard],
+  ['tasks', 'Tugas', viewTasks],
+  ['materi', 'Materi', viewMateri],
+  ['quiz', 'Quiz', viewQuiz],
+  ['exam', 'Simulasi Ujian', viewExam],
+  ['cards', 'Flashcards', viewCards],
+  ['essay', 'Essay', viewEssay],
+  ['settings', 'Pengaturan', viewSettings],
+];
+let pending = null;
+function curRoute(){ return (location.hash.replace(/^#\/?/,'') || ''); }
+async function nav(to){
+  if (leaveGuard && !(await leaveGuard())) return;
+  if (location.hash === '#/' + to || (!to && !location.hash)) render(); else location.hash = '#/' + to;
+}
+function renderNav(){
+  const cur = curRoute();
+  $('#nav').replaceChildren(...ROUTES.map(([r,label]) =>
+    h('button',{'aria-current': r===cur ? 'page' : null, onclick:()=>nav(r)}, label)));
+}
+function render(){
+  if (cleanup){ cleanup(); cleanup = null; }
+  keyHandler = null; leaveGuard = null;
+  renderNav();
+  const r = ROUTES.find(x=>x[0]===curRoute()) || ROUTES[0];
+  if (!courseNames().length && r[0] !== 'settings') { mount(emptyBank()); return; }
+  r[2]();
+}
+window.addEventListener('hashchange', render);
+window.addEventListener('keydown', e => {
+  if (e.target && /^(TEXTAREA|INPUT|SELECT)$/.test(e.target.tagName)) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (keyHandler) keyHandler(e);
+});
+function emptyBank(){
+  return h('div',{class:'card empty'},
+    h('h3',null,'Bank soal belum termuat'),
+    h('p',null,'Pastikan folder "bank" ada di sebelah file index.html, lalu buka index.html langsung dari folder itu.'),
+    h('button',{class:'btn',onclick:()=>nav('settings')},'Lihat pengaturan'));
+}
+
+/* ================= Dashboard ================= */
+function viewDashboard(){
+  const all = Object.values(COURSES);
+  const now = Date.now();
+  let answered=0, correct=0, due=0;
+  for (const c of all){
+    for (const q of c.mcq){ const s=S.mcq[q.id]; if (s){ answered+=s.n; correct+=s.c; } }
+    for (const k of c.cards){ const s=S.cards[k.id]; if (s && s.due<=now) due++; }
+  }
+  let streak = 0;
+  for (let i=0;i<400;i++){
+    const k = dkey(Date.now() - i*DAY);
+    if (S.days[k] > 0) streak++; else if (i>0) break; else continue;
+  }
+  const root = h('div');
+  root.append(h('h1',null,'Dashboard'), h('p',{class:'sub'},'Ringkasan belajar dari semua mata kuliah.'));
+  dashDay = dkey();
+  root.append(examAlert());
+  { const ta = taskAlert(); if (ta) root.append(ta); }
+  if (!storageOK) root.append(h('div',{class:'notice'},'Penyimpanan browser tidak tersedia, progres tidak akan tersimpan. Buka dengan Chrome atau Safari biasa (bukan mode privat).'));
+  else if ((answered || Object.keys(S.cards).length) && !S.exported) root.append(h('div',{class:'notice'},'Progres tersimpan di browser ini saja. Buat cadangan lewat Pengaturan > Ekspor progres.'));
+
+  const stat = (n,l,id) => h('div',{class:'card stat'},h('div',{class:'n',id},n),h('div',{class:'l'},l));
+  root.append(h('div',{class:'grid g3'},
+    stat(answered,'soal dijawab'),
+    stat(answered?pct(correct,answered)+'%':'-','akurasi'),
+    stat(due,'flashcard jatuh tempo'),
+    stat(streak,'hari beruntun'),
+    stat(fmtDur(todayMs()),'belajar hari ini','stat-today'),
+    stat(fmtDur(weekMs()),'belajar 7 hari terakhir','stat-week')));
+
+  // belajar semua mata kuliah
+  const tot = k => all.reduce((a,c)=>a+c[k].length,0);
+  root.append(h('h2',null,'Belajar semua mata kuliah'),
+    h('div',{class:'card'},
+      h('p',{class:'muted',style:'margin-top:0'},`${all.length} mata kuliah · ${tot('mcq')} soal · ${tot('cards')} flashcards · ${tot('essay')} essay · ${MATERI.length} materi`),
+      h('div',{class:'row'},
+        h('button',{class:'btn primary',onclick:()=>{pending={course:ALL_KEY};nav('quiz');}},'Quiz campuran'),
+        h('button',{class:'btn',onclick:()=>{pending={course:ALL_KEY};nav('cards');}},'Flashcards semua'),
+        h('button',{class:'btn',onclick:()=>{pending={course:ALL_KEY};nav('exam');}},'Ujian campuran'),
+        h('button',{class:'btn',onclick:()=>nav('materi')},'Baca materi'))));
+
+  root.append(h('h2',null,'Mata kuliah'));
+  const cg = h('div',{class:'grid g2'});
+  const sorted = all.slice().sort((a,b)=>{
+    const da = a.meta&&a.meta.mid?daysTo(a.meta.mid.date):1e9, db = b.meta&&b.meta.mid?daysTo(b.meta.mid.date):1e9;
+    return da-db;
+  });
+  for (const c of sorted){
+    const content = hasContent(c);
+    const mid = c.meta && c.meta.mid; const dd = mid ? daysTo(mid.date) : null;
+    const midChip = mid && dd>=0 ? h('span',{class:'chip '+(dd<=7?'bad':dd<=14?'warn':'')},`MID ${dateID(mid.date)} · ${dd===0?'hari ini':dd+' hari lagi'}`) : null;
+    const seen = c.mcq.filter(q=>S.mcq[q.id]);
+    const n = seen.reduce((a,q)=>a+S.mcq[q.id].n,0), cc = seen.reduce((a,q)=>a+S.mcq[q.id].c,0);
+    const cardsSeen = c.cards.filter(k=>S.cards[k.id]);
+    const cardsDue = cardsSeen.filter(k=>S.cards[k.id].due<=now).length;
+    const essayDone = c.essay.filter(e=>S.essay[e.id] && S.essay[e.id].n>0);
+    const matList = c.materi.filter(m=>m.kind!=='Ringkasan Semua Sesi');
+    const matRead = matList.filter(m=>S.materi[m.id]).length;
+    const lastExam = [...S.exams].reverse().find(x=>x.course===c.name);
+    const sessions = [...new Set(c.mcq.map(q=>q.session))];
+    cg.append(h('div',{class:'card'},
+      h('div',{class:'row'},h('h3',{style:'margin:0'},c.name),h('span',{class:'sp'}),midChip),
+      h('p',{class:'muted',style:'margin:4px 0 10px;font-size:.9rem'},
+        [c.meta?`${c.meta.code} · ${c.meta.room}`:null, mid?`MID ${mid.time}, ruang ${mid.room}`:(c.meta?'tanpa MID di jadwal':null)].filter(Boolean).join(' · ')),
+      content ? h('div',null,
+        h('div',{class:'muted'},`Quiz: ${seen.length}/${c.mcq.length} soal pernah dicoba · akurasi ${n?pct(cc,n)+'%':'-'}`),
+        bar(pct(seen.length,c.mcq.length)),
+        h('div',{class:'muted',style:'margin-top:10px'},`Flashcards: ${cardsSeen.length}/${c.cards.length} dipelajari · ${cardsDue} jatuh tempo`),
+        bar(pct(cardsSeen.length,c.cards.length),'ok'),
+        h('div',{class:'muted',style:'margin-top:10px'},`Materi: ${matRead}/${matList.length} dibaca · Essay: ${essayDone.length}/${c.essay.length}`+(lastExam?` · ujian terakhir ${pct(lastExam.correct,lastExam.total)}%`:'')),
+        bar(pct(matRead,matList.length)),
+        sessions.length?h('div',{class:'muted',style:'margin-top:8px;font-size:.85rem'},sessions.join(' · ')):null)
+      : h('div',{class:'muted',style:'padding:6px 0'},'Belum ada materi yang diunggah. Kirim file materinya ke Claude, nanti ringkasan, soal, dan flashcards masuk ke sini.'),
+      h('div',{class:'row',style:'margin-top:14px'},
+        c.materi.length?h('button',{class:'btn small primary',onclick:()=>{pending={materiCourse:c.name};nav('materi');}},'Materi'):null,
+        content?h('button',{class:'btn small',onclick:()=>{pending={course:c.name};nav('quiz');}},'Quiz'):null,
+        content?h('button',{class:'btn small',onclick:()=>{pending={course:c.name};nav('cards');}},'Flashcards'):null,
+        content?h('button',{class:'btn small',onclick:()=>{pending={course:c.name};nav('exam');}},'Ujian'):null)));
+  }
+  root.append(cg);
+
+  // topik lemah
+  const agg = {};
+  for (const c of all) for (const q of c.mcq){
+    const s = S.mcq[q.id]; if (!s) continue;
+    const k = c.name+'||'+q.topic; const a = agg[k] || (agg[k]={course:c.name,topic:q.topic,n:0,c:0});
+    a.n += s.n; a.c += s.c;
+  }
+  const weak = Object.values(agg).filter(a=>pct(a.c,a.n)<75).sort((a,b)=>pct(a.c,a.n)-pct(b.c,b.n)).slice(0,6);
+  root.append(h('h2',null,'Topik yang masih lemah'));
+  if (!Object.keys(agg).length) root.append(h('div',{class:'card empty'},'Belum ada data. Kerjakan beberapa soal quiz dulu.'));
+  else if (!weak.length) root.append(h('div',{class:'card empty'},'Tidak ada topik di bawah 75%. Pertahankan.'));
+  else root.append(h('div',{class:'card'},h('table',null,
+    h('thead',null,h('tr',null,h('th',null,'Topik'),h('th',null,'Mata kuliah'),h('th',null,'Akurasi'),h('th'))),
+    h('tbody',null,weak.map(a=>h('tr',null,
+      h('td',null,a.topic), h('td',{class:'muted'},a.course), h('td',null,accChip(pct(a.c,a.n),a.n)),
+      h('td',null,h('button',{class:'btn small',onclick:()=>{pending={course:a.course,topics:[a.topic]};nav('quiz');}},'Latih'))))))));
+
+  // aktivitas 14 hari
+  const days = [...Array(14)].map((_,i)=>{ const k=dkey(Date.now()-(13-i)*DAY); return {k,v:S.days[k]||0}; });
+  const mx = Math.max(1,...days.map(d=>d.v));
+  root.append(h('h2',null,'Aktivitas 14 hari terakhir'),
+    h('div',{class:'card'}, h('div',{class:'chart'},days.map(d=>h('div',{class:d.v?'':'z',style:`height:${d.v?Math.max(8,d.v*100/mx):4}%`,title:`${d.k}: ${d.v} aktivitas`}))),
+      h('div',{class:'row muted',style:'justify-content:space-between;font-size:.8rem;margin-top:6px'},h('span',null,days[0].k),h('span',null,'hari ini'))));
+
+  // riwayat ujian
+  root.append(h('h2',null,'Riwayat simulasi ujian'));
+  const ex = [...S.exams].reverse().slice(0,5);
+  if (!ex.length) root.append(h('div',{class:'card empty'},'Belum ada simulasi ujian.'));
+  else root.append(h('div',{class:'card'},h('table',null,
+    h('thead',null,h('tr',null,h('th',null,'Tanggal'),h('th',null,'Mata kuliah'),h('th',null,'Nilai'),h('th',null,'Waktu'))),
+    h('tbody',null,ex.map(x=>h('tr',null,
+      h('td',null,new Date(x.t).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})),
+      h('td',null,x.course),
+      h('td',null,`${x.correct}/${x.total} (${pct(x.correct,x.total)}%)`),
+      h('td',{class:'muted'},`${Math.round(x.secs/60)} / ${x.durationMin} mnt`)))))));
+  mount(root);
+}
+
+/* ================= Quiz ================= */
+function viewQuiz(){
+  const st = { course: (pending&&pending.course) || defaultCourse(), topics:null, count:10, focus:true };
+  if (pending && pending.topics) st.topics = new Set(pending.topics);
+  pending = null;
+  const root = h('div');
+  function draw(){
+    const c = getCourse(st.course); const tp = topicsOf(c.mcq);
+    if (!st.topics || ![...st.topics].some(t=>tp[t])) st.topics = new Set(Object.keys(tp));
+    const pool = c.mcq.filter(q=>st.topics.has(q.topic));
+    root.replaceChildren(
+      h('h1',null,'Quiz'), h('p',{class:'sub'},'Latihan pilihan ganda dengan pembahasan langsung.'),
+      h('div',{class:'card'},
+        h('label',{class:'field'},'Mata kuliah'), courseSelect(st.course, v=>{st.course=v;st.topics=null;draw();}),
+        h('label',{class:'field'},'Topik'),
+        h('div',{class:'row',style:'margin-bottom:4px'},
+          h('button',{class:'btn small',onclick:()=>{st.topics=new Set(Object.keys(tp));draw();}},'Pilih semua'),
+          h('button',{class:'btn small',onclick:()=>{st.topics=new Set();draw();}},'Kosongkan')),
+        h('div',{class:'topics'}, Object.entries(tp).map(([t,n])=>{
+          const items=c.mcq.filter(q=>q.topic===t); let a=0,b=0;
+          for (const q of items){ const s=S.mcq[q.id]; if(s){a+=s.c;b+=s.n;} }
+          return h('label',{class:'topic'},
+            h('input',{type:'checkbox',checked:st.topics.has(t),onchange:e=>{e.target.checked?st.topics.add(t):st.topics.delete(t);draw();}}),
+            h('span',{class:'sp'},`${t} (${n})`), accChip(pct(a,b),b));
+        })),
+        h('label',{class:'field'},'Jumlah soal'),
+        h('select',{onchange:e=>{st.count=+e.target.value;draw();}},
+          [5,10,20,0].map(n=>h('option',{value:n,selected:st.count===n},n?n+' soal':'Semua ('+pool.length+')'))),
+        h('label',{class:'topic',style:'margin-top:14px'},
+          h('input',{type:'checkbox',checked:st.focus,onchange:e=>{st.focus=e.target.checked;}}),
+          h('span',null,'Prioritaskan soal yang sering salah dan belum dicoba')),
+        h('div',{class:'row',style:'margin-top:18px'},
+          h('button',{class:'btn primary',disabled:!pool.length,onclick:()=>startQuiz(pool,st)},'Mulai quiz'),
+          h('span',{class:'muted'},pool.length+' soal tersedia'))));
+  }
+  draw(); mount(root);
+}
+function prepQ(q){
+  const order = shuffle([...q.options.keys()]);
+  return { q, order, correctPos: order.indexOf(q.answer), picked:null };
+}
+function startQuiz(pool, st){
+  let arr = pool.slice();
+  shuffle(arr);
+  if (st.focus) arr.sort((a,b)=>weakScore(b)-weakScore(a));
+  const n = st.count || arr.length;
+  const items = shuffle(arr.slice(0,n)).map(prepQ);
+  runQuiz(items, st);
+}
+function runQuiz(items, st){
+  let i = 0; const root = h('div'); let locked = false;
+  function show(){
+    const it = items[i]; locked = !!it.picked;
+    const box = h('div',{class:'card'});
+    box.append(h('div',{class:'row prog'},
+      h('span',{class:'chip'},it.q.topic), h('span',{class:'sp'}), h('span',{class:'muted'},`Soal ${i+1} dari ${items.length}`)),
+      bar(i*100/items.length), h('div',{class:'qtext',style:'margin-top:16px'},it.q.q), figEl(it.q.image));
+    const opts = it.order.map((oi,pos)=>{
+      const b = h('button',{class:'opt',onclick:()=>pick(pos)}, h('span',{class:'k'},LET[pos]), h('span',null,it.q.options[oi]));
+      return b;
+    });
+    box.append(...opts);
+    const ex = h('div'); box.append(ex);
+    function reveal(){
+      opts.forEach((b,pos)=>{
+        b.disabled = true;
+        if (pos===it.correctPos) b.classList.add('right');
+        else if (pos===it.picked) b.classList.add('wrong');
+      });
+      const ok = it.picked === it.correctPos;
+      ex.replaceChildren(h('div',{class:'explain '+(ok?'ok':'bad')},
+        h('strong',null, ok?'Benar. ':'Kurang tepat. '), it.q.explain,
+        it.q.source?h('div',{class:'muted',style:'font-size:.85rem;margin-top:4px'},'Sumber: '+it.q.source):null),
+        h('div',{class:'row',style:'margin-top:14px'},
+          h('button',{class:'btn primary',onclick:next},i<items.length-1?'Soal berikutnya':'Lihat hasil'),
+          h('span',{class:'muted'},'Enter / → untuk lanjut')));
+    }
+    function pick(pos){
+      if (locked) return; locked = true; it.picked = pos;
+      recordMcq(it.q.id, pos===it.correctPos); save(); reveal();
+    }
+    if (it.picked!==null) reveal();
+    root.replaceChildren(box);
+    keyHandler = e => {
+      const k = e.key.toUpperCase();
+      if (!locked){
+        const idx = '1234'.indexOf(k) >= 0 ? '1234'.indexOf(k) : 'ABCD'.indexOf(k);
+        if (idx >= 0 && idx < it.order.length && k.length===1) pick(idx);
+      } else if (e.key==='Enter' || e.key==='ArrowRight') next();
+    };
+  }
+  function next(){ if (i<items.length-1){ i++; show(); } else finish(); }
+  function finish(){
+    keyHandler = null; leaveGuard = null;
+    const ok = items.filter(x=>x.picked===x.correctPos).length;
+    const wrong = items.filter(x=>x.picked!==x.correctPos);
+    const p = pct(ok, items.length);
+    root.replaceChildren(
+      h('h1',null,'Hasil quiz'),
+      h('div',{class:'card'},
+        h('div',{class:'stat'},h('div',{class:'n'},`${ok}/${items.length}`),h('div',{class:'l'},p+'% benar')),
+        bar(p, p>=70?'ok':''),
+        h('div',{class:'row',style:'margin-top:16px'},
+          wrong.length?h('button',{class:'btn primary',onclick:()=>runQuiz(shuffle(wrong.map(w=>prepQ(w.q))),st)},`Ulang ${wrong.length} yang salah`):null,
+          h('button',{class:'btn',onclick:()=>{pending={course:st.course};render();}},'Quiz baru'),
+          h('button',{class:'btn',onclick:()=>nav('')},'Dashboard'))),
+      wrong.length?h('h2',null,'Yang perlu diulang'):h('p',{class:'sub',style:'margin-top:16px'},'Semua benar. Mantap.'),
+      wrong.map(w=>h('details',{class:'rv',open:true},
+        h('summary',null,h('strong',null,w.q.q)),
+        h('div',{class:'in'},
+          h('div',null,h('span',{class:'chip bad'},'Jawabanmu'),' ',w.q.options[w.order[w.picked]]),
+          h('div',{style:'margin-top:6px'},h('span',{class:'chip ok'},'Benar'),' ',w.q.options[w.q.answer]),
+          h('div',{class:'explain',style:'margin-top:10px'},w.q.explain)))));
+    window.scrollTo(0,0);
+  }
+  show(); mount(root);
+  leaveGuard = async () => items.some(x=>x.picked!==null) && items.some(x=>x.picked===null) ? ask('Quiz belum selesai. Keluar sekarang? Jawaban yang sudah dikerjakan tetap tersimpan.','Keluar') : true;
+}
+
+/* ================= Simulasi ujian ================= */
+function viewExam(){
+  const st = { course: (pending&&pending.course) || defaultCourse(), n:0, min:0 };
+  pending = null;
+  const root = h('div');
+  function draw(){
+    const c = getCourse(st.course); const total = c.mcq.length;
+    if (!st.n || st.n>total) st.n = Math.min(30,total);
+    if (!st.min) st.min = Math.max(1,Math.round(st.n*1.0));
+    root.replaceChildren(
+      h('h1',null,'Simulasi Ujian'), h('p',{class:'sub'},'Soal acak, ada timer, tanpa pembahasan sampai kamu selesai.'),
+      h('div',{class:'card'},
+        h('label',{class:'field'},'Mata kuliah'), courseSelect(st.course,v=>{st.course=v;st.n=0;st.min=0;draw();}),
+        h('label',{class:'field'},`Jumlah soal (maks ${total})`),
+        h('input',{type:'number',min:1,max:total,value:st.n,onchange:e=>{st.n=Math.max(1,Math.min(total,+e.target.value||1));st.min=Math.max(1,Math.round(st.n));draw();}}),
+        h('label',{class:'field'},'Durasi (menit)'),
+        h('input',{type:'number',min:1,max:300,value:st.min,onchange:e=>{st.min=Math.max(1,+e.target.value||1);}}),
+        h('div',{class:'row',style:'margin-top:18px'},
+          h('button',{class:'btn primary',onclick:()=>runExam(c,st.n,st.min)},'Mulai ujian'))));
+  }
+  draw(); mount(root);
+}
+function runExam(c, n, minutes){
+  const items = shuffle(c.mcq.slice()).slice(0,n).map(prepQ);
+  const flags = new Set(); let i = 0; let finished = false;
+  const startT = Date.now(), endT = startT + minutes*60e3;
+  const root = h('div'); const timerEl = h('span',{class:'timer'},'--:--');
+  function tick(){
+    const left = Math.max(0, endT - Date.now()); const s = Math.ceil(left/1000);
+    timerEl.textContent = String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+    timerEl.classList.toggle('low', left < 60e3);
+    if (left<=0 && !finished) submit(true);
+  }
+  const iv = setInterval(tick, 500);
+  cleanup = () => clearInterval(iv);
+  function show(){
+    const it = items[i];
+    const pal = h('div',{class:'pal'},items.map((x,k)=>h('button',{
+      class:(x.picked!==null?'ans ':'')+(flags.has(k)?'flag ':'')+(k===i?'cur':''),
+      title:'Soal '+(k+1),'aria-label':'Soal '+(k+1),onclick:()=>{i=k;show();}},k+1)));
+    const box = h('div',{class:'card'},
+      h('div',{class:'row prog'},h('span',{class:'muted'},`Soal ${i+1} dari ${items.length}`),h('span',{class:'sp'}),
+        h('button',{class:'btn small',onclick:()=>{flags.has(i)?flags.delete(i):flags.add(i);show();}},flags.has(i)?'Hapus tanda':'Tandai ragu'),timerEl),
+      h('div',{class:'qtext'},it.q.q), figEl(it.q.image),
+      it.order.map((oi,pos)=>h('button',{class:'opt'+(it.picked===pos?' sel':''),onclick:()=>{it.picked=pos;show();}},
+        h('span',{class:'k'},LET[pos]),h('span',null,it.q.options[oi]))),
+      h('div',{class:'row',style:'margin-top:14px'},
+        h('button',{class:'btn',disabled:i===0,onclick:()=>{i--;show();}},'Sebelumnya'),
+        h('button',{class:'btn',disabled:i===items.length-1,onclick:()=>{i++;show();}},'Berikutnya'),
+        h('span',{class:'sp'}),
+        h('button',{class:'btn primary',onclick:confirmSubmit},'Selesai & kumpulkan')));
+    root.replaceChildren(pal, box); tick();
+    keyHandler = e => {
+      const idx = '1234'.indexOf(e.key) >= 0 ? '1234'.indexOf(e.key) : 'ABCD'.indexOf(e.key.toUpperCase());
+      if (idx>=0 && idx<it.order.length && e.key.length===1){ it.picked=idx; show(); }
+      else if (e.key==='ArrowRight' && i<items.length-1){ i++; show(); }
+      else if (e.key==='ArrowLeft' && i>0){ i--; show(); }
+    };
+  }
+  async function confirmSubmit(){
+    const un = items.filter(x=>x.picked===null).length;
+    if (await ask(un?`Masih ada ${un} soal belum dijawab. Kumpulkan sekarang?`:'Kumpulkan jawaban sekarang?','Kumpulkan')) submit(false);
+  }
+  function submit(timeUp){
+    if (finished) return; finished = true; clearInterval(iv); cleanup = null; keyHandler = null; leaveGuard = null;
+    const secs = Math.min(Math.round((Date.now()-startT)/1000), minutes*60);
+    let ok = 0; const byTopic = {};
+    items.forEach(x=>{
+      const right = x.picked === x.correctPos;
+      if (x.picked !== null) recordMcq(x.q.id, right);
+      if (right) ok++;
+      const t = byTopic[x.q.topic] || (byTopic[x.q.topic]={n:0,c:0}); t.n++; if (right) t.c++;
+    });
+    S.exams.push({t:Date.now(),course:c.name,total:items.length,correct:ok,secs,durationMin:minutes});
+    save();
+    const p = pct(ok, items.length);
+    root.replaceChildren(
+      h('h1',null,'Hasil ujian'),
+      timeUp?h('div',{class:'notice'},'Waktu habis, jawaban otomatis dikumpulkan.'):null,
+      h('div',{class:'card'},
+        h('div',{class:'stat'},h('div',{class:'n'},`${ok}/${items.length}`),h('div',{class:'l'},`${p}% benar · waktu ${Math.floor(secs/60)} mnt ${secs%60} dtk dari ${minutes} mnt`)),
+        bar(p,p>=70?'ok':''),
+        h('div',{class:'row',style:'margin-top:16px'},
+          h('button',{class:'btn primary',onclick:()=>{pending={course:c.key};render();}},'Ujian baru'),
+          h('button',{class:'btn',onclick:()=>nav('')},'Dashboard'))),
+      h('h2',null,'Per topik'),
+      h('div',{class:'card'},h('table',null,h('thead',null,h('tr',null,h('th',null,'Topik'),h('th',null,'Benar'),h('th',null,'Akurasi'))),
+        h('tbody',null,Object.entries(byTopic).sort((a,b)=>pct(a[1].c,a[1].n)-pct(b[1].c,b[1].n)).map(([t,v])=>
+          h('tr',null,h('td',null,t),h('td',null,`${v.c}/${v.n}`),h('td',null,accChip(pct(v.c,v.n),v.n))))))),
+      h('h2',null,'Pembahasan'),
+      items.map((x,k)=>{
+        const right = x.picked===x.correctPos;
+        return h('details',{class:'rv',open:!right},
+          h('summary',null,h('span',{class:'chip '+(right?'ok':'bad')},right?'Benar':(x.picked===null?'Kosong':'Salah')),h('span',null,`${k+1}. ${x.q.q}`)),
+          h('div',{class:'in'},
+            x.picked!==null&&!right?h('div',null,h('span',{class:'chip bad'},'Jawabanmu'),' ',x.q.options[x.order[x.picked]]):null,
+            h('div',{style:'margin-top:6px'},h('span',{class:'chip ok'},'Benar'),' ',x.q.options[x.q.answer]),
+            h('div',{class:'explain',style:'margin-top:10px'},x.q.explain)));
+      }));
+    window.scrollTo(0,0);
+  }
+  leaveGuard = async () => finished ? true : ask('Ujian sedang berjalan. Keluar akan membatalkan ujian ini.','Keluar & batalkan');
+  show(); mount(root);
+}
+
+/* ================= Flashcards ================= */
+function viewCards(){
+  const st = { course:(pending&&pending.course)||defaultCourse() };
+  pending = null;
+  const root = h('div');
+  function draw(){
+    const c = getCourse(st.course); const now = Date.now();
+    const seen = c.cards.filter(k=>S.cards[k.id]); const due = seen.filter(k=>S.cards[k.id].due<=now);
+    const fresh = c.cards.filter(k=>!S.cards[k.id]);
+    const left = newLeftToday(); const nNew = Math.min(left, fresh.length);
+    root.replaceChildren(
+      h('h1',null,'Flashcards'), h('p',{class:'sub'},'Kartu muncul lagi sesuai seberapa kamu mengingatnya (spaced repetition).'),
+      h('div',{class:'card'},
+        h('label',{class:'field'},'Mata kuliah'), courseSelect(st.course,v=>{st.course=v;draw();}),
+        h('div',{class:'grid g4',style:'margin-top:16px'},
+          h('div',{class:'stat'},h('div',{class:'n'},due.length),h('div',{class:'l'},'jatuh tempo')),
+          h('div',{class:'stat'},h('div',{class:'n'},nNew),h('div',{class:'l'},'kartu baru hari ini')),
+          h('div',{class:'stat'},h('div',{class:'n'},seen.length),h('div',{class:'l'},'sudah dipelajari')),
+          h('div',{class:'stat'},h('div',{class:'n'},c.cards.length),h('div',{class:'l'},'total kartu'))),
+        h('div',{class:'row',style:'margin-top:18px'},
+          h('button',{class:'btn primary',disabled:!(due.length+nNew),onclick:()=>runCards(c,[...due.sort((a,b)=>S.cards[a.id].due-S.cards[b.id].due),...fresh.slice(0,nNew)],false)},
+            due.length+nNew?`Mulai belajar (${due.length+nNew} kartu)`:'Tidak ada kartu untuk hari ini'),
+          h('button',{class:'btn',onclick:()=>runCards(c,shuffle(c.cards.slice()),true)},'Mode cramming (semua kartu, jadwal tidak berubah)'))));
+  }
+  draw(); mount(root);
+}
+function runCards(c, list, cram){
+  const queue = list.slice(); const total = queue.length; let flipped = false;
+  const counts = [0,0,0,0]; const root = h('div'); let done = 0;
+  function show(){
+    if (!queue.length) return finish();
+    const k = queue[0]; flipped = false; const st = S.cards[k.id];
+    const face = h('div',{class:'card fcard',role:'button',tabindex:'0','aria-label':'Balik kartu',onclick:flip,onkeydown:e=>{if(e.key==='Enter')flip();}});
+    function setFace(){
+      face.replaceChildren(flipped
+        ? h('div',{class:'back'},k.back)
+        : h('div',null,k.front,figEl(k.image)));
+    }
+    function flip(){ flipped = !flipped; setFace(); rate.style.display = flipped?'grid':'none'; hint.style.display = flipped?'none':'block'; }
+    const rate = h('div',{class:'rate',style:'display:none'},
+      ['Lagi','Sulit','Bagus','Mudah'].map((lab,r)=>h('button',{onclick:()=>answer(r)},`${r+1}. ${lab}`,
+        cram?null:h('small',null,fmtIv(r,st)))));
+    const hint = h('p',{class:'muted',style:'text-align:center'},'Klik kartu atau tekan Spasi untuk melihat jawaban');
+    setFace();
+    root.replaceChildren(
+      h('div',{class:'row prog'},h('span',{class:'chip'},k.topic),h('span',{class:'sp'}),h('span',{class:'muted'},`${done} selesai · ${queue.length} tersisa`)),
+      bar(done*100/Math.max(1,done+queue.length)),
+      h('div',{class:'fcard-wrap',style:'margin-top:14px'},face), hint, rate);
+    keyHandler = e => {
+      if (e.key===' '||e.key==='Enter'){ e.preventDefault(); if(!flipped) flip(); }
+      else if (flipped && '1234'.includes(e.key) && e.key.length===1) answer(+e.key-1);
+    };
+    function answer(r){
+      counts[r]++;
+      const isNew = !S.cards[k.id];
+      queue.shift();
+      if (!cram){
+        S.cards[k.id] = sched(S.cards[k.id], r);
+        if (isNew){ newLeftToday(); S.newToday.count++; }
+        bumpDay(); save();
+      }
+      if (r===0){ queue.splice(Math.min(3,queue.length),0,k); } else done++;
+      show();
+    }
+  }
+  function finish(){
+    keyHandler = null; leaveGuard = null;
+    root.replaceChildren(h('h1',null,'Sesi selesai'),
+      h('div',{class:'card'},
+        h('div',{class:'grid g4'},
+          ['Lagi','Sulit','Bagus','Mudah'].map((l,r)=>h('div',{class:'stat'},h('div',{class:'n'},counts[r]),h('div',{class:'l'},l)))),
+        cram?h('p',{class:'muted'},'Mode cramming tidak mengubah jadwal pengulangan.'):null,
+        h('div',{class:'row',style:'margin-top:16px'},
+          h('button',{class:'btn primary',onclick:()=>{pending={course:c.key};render();}},'Kembali'),
+          h('button',{class:'btn',onclick:()=>nav('')},'Dashboard'))));
+  }
+  leaveGuard = async () => (queue.length && queue.length<total) ? ask('Sesi belum selesai. Keluar? Kartu yang sudah dinilai tetap tersimpan.','Keluar') : true;
+  show(); mount(root);
+}
+
+/* ================= Essay ================= */
+function viewEssay(){
+  const st = { course:(pending&&pending.course)||defaultCourse(), open:null };
+  pending = null;
+  const root = h('div');
+  function list(){
+    st.open = null; const c = getCourse(st.course);
+    root.replaceChildren(
+      h('h1',null,'Essay'), h('p',{class:'sub'},'Tulis jawaban dengan kata-katamu sendiri, lalu cocokkan dengan poin kunci dan nilai diri sendiri.'),
+      h('div',{class:'card'},h('label',{class:'field',style:'margin-top:0'},'Mata kuliah'),courseSelect(st.course,v=>{st.course=v;list();})),
+      h('h2',null,'Soal'),
+      c.essay.length?h('div',{class:'grid'},c.essay.map((e,k)=>{
+        const s = S.essay[e.id];
+        return h('div',{class:'card'},h('div',{class:'row'},h('span',{class:'chip'},e.topic),h('span',{class:'chip'},e.session),h('span',{class:'sp'}),
+            s&&s.n?h('span',{class:'chip '+(s.last>=70?'ok':'warn')},`terakhir ${s.last}% · terbaik ${s.best}%`):h('span',{class:'chip'},'belum dikerjakan')),
+          h('p',{style:'margin:10px 0'},e.q),
+          h('button',{class:'btn small primary',onclick:()=>detail(k)},s&&s.n?'Kerjakan lagi':'Kerjakan'));
+      })):h('div',{class:'card empty'},'Belum ada soal essay untuk mata kuliah ini.'));
+  }
+  function detail(k){
+    const c = getCourse(st.course); const e = c.essay[k]; const s = S.essay[e.id] || {n:0,hist:[],draft:''};
+    let revealed = false; const checked = new Set();
+    const ta = h('textarea',{placeholder:'Tulis jawabanmu di sini...',value:s.draft||'',oninput:ev=>{ (S.essay[e.id]||(S.essay[e.id]={n:0,hist:[]})).draft = ev.target.value; save(); }});
+    const keyBox = h('div');
+    function drawKey(){
+      if (!revealed){ keyBox.replaceChildren(h('button',{class:'btn primary',onclick:()=>{revealed=true;drawKey();}},'Tampilkan poin kunci & jawaban model')); return; }
+      const score = pct(checked.size, e.keyPoints.length);
+      keyBox.replaceChildren(
+        h('h3',{style:'margin-top:6px'},'Poin kunci (centang yang sudah ada di jawabanmu)'),
+        e.keyPoints.map((p,i)=>h('label',{class:'topic',style:'margin-bottom:6px'},
+          h('input',{type:'checkbox',checked:checked.has(i),onchange:ev=>{ev.target.checked?checked.add(i):checked.delete(i);drawKey();}}),h('span',null,p))),
+        h('div',{class:'explain'},h('strong',null,'Jawaban model: '),e.model),
+        h('div',{class:'row',style:'margin-top:14px'},
+          h('span',{class:'chip '+(score>=70?'ok':'warn')},`Skor: ${checked.size}/${e.keyPoints.length} (${score}%)`),h('span',{class:'sp'}),
+          h('button',{class:'btn primary',onclick:()=>{
+            const r = S.essay[e.id] || (S.essay[e.id]={n:0,hist:[]});
+            r.n++; r.last = score; r.best = Math.max(r.best||0, score); r.hist.push({t:Date.now(),score}); bumpDay(); save(); list(); }},'Simpan skor')));
+    }
+    drawKey();
+    root.replaceChildren(
+      h('div',{class:'row'},h('button',{class:'btn small',onclick:list},'← Daftar soal'),h('span',{class:'sp'}),
+        h('button',{class:'btn small',disabled:k===0,onclick:()=>detail(k-1)},'Sebelumnya'),
+        h('button',{class:'btn small',disabled:k===c.essay.length-1,onclick:()=>detail(k+1)},'Berikutnya')),
+      h('div',{class:'card',style:'margin-top:12px'},
+        h('div',{class:'row'},h('span',{class:'chip'},e.topic),h('span',{class:'chip'},e.session)),
+        h('div',{class:'qtext'},e.q), figEl(e.image), ta, h('div',{style:'margin-top:14px'},keyBox)));
+    window.scrollTo(0,0);
+  }
+  list(); mount(root);
+}
+
+/* ================= Materi (baca ringkasan) ================= */
+function inl(text){
+  const out = []; const re = /(\*\*[^*]+\*\*|`[^`]+`|\[\[[^\]]+\]\]|\[[^\]]+\]\([^)\s]+\)|\*[^*\s][^*]*\*)/g;
+  let last = 0, m;
+  while ((m = re.exec(text))){
+    if (m.index > last) out.push(text.slice(last, m.index));
+    const t = m[0];
+    if (t.startsWith('**')) out.push(h('strong',null,inl(t.slice(2,-2))));
+    else if (t.startsWith('`')) out.push(h('code',null,t.slice(1,-1)));
+    else if (t.startsWith('[[')){
+      const parts = t.slice(2,-2).split('|'); const target = parts[0].trim(); const label = (parts[1]||parts[0]).trim();
+      const mt = MATERI.find(x=>x.title===target);
+      out.push(mt ? h('a',{href:'#',class:'wl',onclick:e=>{e.preventDefault();openMateri(mt.id);}},label) : label);
+    } else if (t.startsWith('[')){
+      const mm = /^\[([^\]]+)\]\(([^)\s]+)\)$/.exec(t);
+      if (mm && /^https?:\/\//.test(mm[2])) out.push(h('a',{href:mm[2],target:'_blank',rel:'noopener'},mm[1]));
+      else out.push(mm ? mm[1] : t);
+    } else out.push(h('em',null,inl(t.slice(1,-1))));
+    last = m.index + t.length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+function buildList(items){
+  const rootEl = h(items[0].ordered ? 'ol' : 'ul');
+  const stack = [{indent:items[0].indent, el:rootEl}];
+  for (const it of items){
+    let top = stack[stack.length-1];
+    if (it.indent > top.indent){
+      const nl = h(it.ordered ? 'ol' : 'ul');
+      (top.el.lastElementChild || top.el).append(nl);
+      stack.push({indent:it.indent, el:nl}); top = stack[stack.length-1];
+    } else {
+      while (stack.length > 1 && it.indent < stack[stack.length-1].indent) stack.pop();
+      top = stack[stack.length-1];
+    }
+    const txt = it.text.replace(/^\[ \]\s*/,'☐ ').replace(/^\[x\]\s*/i,'☑ ');
+    top.el.append(h('li',null,inl(txt)));
+  }
+  return rootEl;
+}
+function figEl(src, cap){
+  if (!src) return null;
+  const img = h('img',{src:src,alt:cap||'',loading:'lazy',onclick:()=>window.open(src,'_blank')});
+  return h('div',{class:'fig'}, img, cap?h('div',{class:'cap'},cap):null);
+}
+function mdToDom(md){
+  const root = h('div',{class:'md'});
+  const lines = md.replace(/\r/g,'').split('\n');
+  const listRe = /^(\s*)([-*]|\d+\.)\s+(.*)$/;
+  const isSep = x => /^\s*\|?[\s:|-]+\|[\s:|-]*$/.test(x) && x.includes('-');
+  let i = 0, firstH1 = true, m;
+  while (i < lines.length){
+    const ln = lines[i];
+    if (!ln.trim()){ i++; continue; }
+    if (/^```/.test(ln)){
+      const buf = []; i++;
+      while (i < lines.length && !/^```/.test(lines[i])){ buf.push(lines[i]); i++; }
+      i++; root.append(h('pre',null,h('code',null,buf.join('\n')))); continue;
+    }
+    if ((m = /^(#{1,4})\s+(.*)$/.exec(ln))){
+      const lvl = m[1].length; i++;
+      if (lvl === 1 && firstH1){ firstH1 = false; continue; }
+      root.append(h('h'+Math.max(2,Math.min(4,lvl)),null,inl(m[2]))); continue;
+    }
+    if ((m = /^!\[(.*)\]\((.+)\)\s*$/.exec(ln))){ root.append(figEl(m[2].trim(), m[1])); i++; continue; }
+    if (/^\s*(---|\*\*\*)\s*$/.test(ln)){ root.append(h('hr')); i++; continue; }
+    if (ln.trim().startsWith('|') && i+1 < lines.length && isSep(lines[i+1])){
+      const rows = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')){ rows.push(lines[i]); i++; }
+      const cells = r => r.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(x=>x.trim());
+      const head = cells(rows[0]); const body = rows.slice(2).map(cells);
+      root.append(h('div',{class:'tw'},h('table',null,
+        h('thead',null,h('tr',null,head.map(x=>h('th',null,inl(x))))),
+        h('tbody',null,body.map(r=>h('tr',null,r.map(x=>h('td',null,inl(x)))))))));
+      continue;
+    }
+    if (ln.startsWith('>')){
+      const buf = [];
+      while (i < lines.length && lines[i].startsWith('>')){ buf.push(lines[i].replace(/^>\s?/,'')); i++; }
+      let title = null, cls = 'explain'; const cm = /^\[!(\w+)\][+-]?\s*(.*)$/.exec(buf[0] || '');
+      if (cm){
+        buf.shift(); title = cm[2] || cm[1];
+        if (cm[1] === 'warning') cls += ' bad'; else if (cm[1] === 'success' || cm[1] === 'tip') cls += ' ok';
+      }
+      root.append(h('div',{class:cls,style:'margin:10px 0'}, title ? h('strong',null,inl(title)) : null, mdToDom(buf.join('\n'))));
+      continue;
+    }
+    if (listRe.test(ln)){
+      const items = [];
+      while (i < lines.length && (m = listRe.exec(lines[i]))){
+        items.push({indent:m[1].replace(/\t/g,'  ').length, ordered:/\d/.test(m[2]), text:m[3]}); i++;
+        while (i < lines.length && lines[i].trim() && !listRe.test(lines[i]) && /^\s{2,}\S/.test(lines[i])){
+          items[items.length-1].text += ' ' + lines[i].trim(); i++;
+        }
+      }
+      root.append(buildList(items)); continue;
+    }
+    const buf = [ln.trim()]; i++;
+    while (i < lines.length && lines[i].trim() && !/^(#{1,4}\s|>|```|\s*(---|\*\*\*)\s*$)/.test(lines[i]) && !listRe.test(lines[i]) && !lines[i].trim().startsWith('|')){
+      buf.push(lines[i].trim()); i++;
+    }
+    root.append(h('p',null,inl(buf.join(' '))));
+  }
+  return root;
+}
+function openMateri(id){
+  const m = MATERI.find(x=>x.id===id); if (!m) return;
+  pending = {materiCourse:m.course, materiId:id};
+  if (curRoute() === 'materi') render(); else nav('materi');
+}
+function viewMateri(){
+  const first = courseNames().find(k=>COURSES[k].materi.length) || courseNames()[0];
+  const st = { course:(pending&&(pending.materiCourse||pending.course))||first, open:(pending&&pending.materiId)||null };
+  if (st.course === ALL_KEY) st.course = first;
+  pending = null;
+  const root = h('div');
+  function list(){
+    st.open = null; const c = COURSES[st.course];
+    root.replaceChildren(
+      h('h1',null,'Materi'), h('p',{class:'sub'},'Ringkasan materi per mata kuliah. Baca, lalu tandai yang sudah dipelajari.'),
+      h('div',{class:'card'},h('label',{class:'field',style:'margin-top:0'},'Mata kuliah'),
+        courseSelect(st.course,v=>{st.course=v;list();},courseNames())),
+      (()=>{ const rk = c.materi.find(x=>x.kind==='Ringkasan Semua Sesi'); if (!rk) return null;
+        return h('div',{class:'card rkm'},
+          h('div',{class:'row'},h('span',{class:'chip'},'Semua sesi'),h('span',{class:'sp'}),
+            S.materi[rk.id]?h('span',{class:'chip ok'},'sudah dibaca'):h('span',{class:'chip'},'belum dibaca')),
+          h('h3',{style:'margin:10px 0 4px'},'Ringkasan semua sesi'),
+          h('p',{class:'muted',style:'margin:0 0 10px'},'Satu halaman yang merangkum seluruh sesi mata kuliah ini, dari sesi pertama sampai terakhir.'),
+          h('button',{class:'btn primary',onclick:()=>read(rk.id)},'Buka ringkasan semua sesi')); })(),
+      h('h2',null,`Daftar materi (${c.materi.filter(m=>m.kind!=='Ringkasan Semua Sesi').length})`),
+      c.materi.length ? h('div',{class:'grid'},c.materi.filter(m=>m.kind!=='Ringkasan Semua Sesi').map(m=>h('div',{class:'card'},
+        h('div',{class:'row'},h('span',{class:'chip'},m.kind||'Materi'),h('span',{class:'chip'},m.session||''),h('span',{class:'sp'}),
+          S.materi[m.id]?h('span',{class:'chip ok'},'sudah dibaca'):h('span',{class:'chip'},'belum dibaca')),
+        h('h3',{style:'margin:10px 0'},m.title),
+        h('button',{class:'btn small primary',onclick:()=>read(m.id)},S.materi[m.id]?'Baca lagi':'Baca'))))
+      : h('div',{class:'card empty'},'Belum ada materi untuk mata kuliah ini. Kirim file materinya ke Claude, nanti ringkasannya muncul di sini.'));
+    window.scrollTo(0,0);
+  }
+  function read(id){
+    const c = COURSES[st.course]; const m0 = c.materi.find(x=>x.id===id);
+    const nav_ = m0.kind==='Ringkasan Semua Sesi' ? [m0] : c.materi.filter(x=>x.kind!=='Ringkasan Semua Sesi');
+    const idx = nav_.findIndex(x=>x.id===id); const m = nav_[idx]; st.open = id;
+    const done = h('input',{type:'checkbox',checked:!!S.materi[id],onchange:e=>{
+      if (e.target.checked){ S.materi[id] = Date.now(); bumpDay(); } else delete S.materi[id]; save(); }});
+    root.replaceChildren(
+      h('div',{class:'row'},h('button',{class:'btn small',onclick:list},'← Daftar materi'),h('span',{class:'sp'}),
+        h('button',{class:'btn small',disabled:idx===0,onclick:()=>read(nav_[idx-1].id)},'Sebelumnya'),
+        h('button',{class:'btn small',disabled:idx===nav_.length-1,onclick:()=>read(nav_[idx+1].id)},'Berikutnya')),
+      h('div',{class:'card',style:'margin-top:12px'},
+        h('div',{class:'row'},h('span',{class:'chip'},m.kind||'Materi'),h('span',{class:'chip'},m.session||'')),
+        h('h1',{style:'margin:10px 0 0'},m.title),
+        m.kind==='Ringkasan Semua Sesi' ? (()=>{
+          const v = h('video',{controls:true,preload:'metadata',style:'width:100%;border-radius:12px;margin-top:12px;background:#000',src:'video/'+m.id.replace(/^rkm-/,'')+'.mp4'});
+          const sp = h('select',{onchange:e=>{v.playbackRate=+e.target.value;}},...[1,1.25,1.5,1.75,2].map(x=>h('option',{value:x},x+'x')));
+          const box = h('div',null,h('div',{class:'row',style:'margin-top:12px'},h('span',{class:'muted'},'Video penjelasan (suara Indonesia, slide per sesi)'),h('span',{class:'sp'}),h('span',{class:'muted'},'Kecepatan'),sp),v);
+          v.onerror = ()=>box.remove(); return box; })() : null,
+        mdToDom(m.markdown),
+        h('hr'),
+        h('label',{class:'topic'},done,h('span',null,'Tandai sudah dipelajari'))));
+    window.scrollTo(0,0);
+  }
+  if (st.open && COURSES[st.course].materi.some(x=>x.id===st.open)) read(st.open); else list();
+  mount(root);
+}
+
+/* ================= Pengaturan ================= */
+function viewSettings(){
+  const root = h('div');
+  const msg = h('p',{class:'muted',role:'status'});
+  root.append(h('h1',null,'Pengaturan'), h('p',{class:'sub'},'Cadangan progres dan bank soal.'));
+  const file = h('input',{type:'file',accept:'application/json,.json',style:'display:none',onchange:async ev=>{
+    const f = ev.target.files[0]; if(!f) return;
+    try {
+      const d = JSON.parse(await f.text());
+      if (!d || typeof d!=='object' || !d.mcq || !d.cards) throw new Error('format');
+      if (await ask('Progres saat ini akan diganti dengan isi file cadangan. Lanjutkan?','Impor')){
+        S = Object.assign(freshState(), d); fixTimer(); save(); drawTimer(); msg.textContent='Progres berhasil diimpor.';
+      }
+    } catch(e){ msg.textContent='File tidak valid. Pilih file cadangan yang diekspor dari aplikasi ini.'; }
+    ev.target.value='';
+  }});
+  root.append(h('div',{class:'card'},
+    h('h3',null,'Cadangan progres'),
+    h('p',{class:'muted',style:'margin-top:0'},'Progres tersimpan di browser ini. Ekspor secara berkala, terutama sebelum membersihkan data browser.'),
+    h('div',{class:'row'},
+      h('button',{class:'btn primary',onclick:()=>{
+        const blob = new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+        const a = h('a',{href:URL.createObjectURL(blob),download:`progres-belajar-${dkey()}.json`}); document.body.append(a); a.click(); a.remove();
+        S.exported = Date.now(); save(); msg.textContent='Cadangan diunduh.';
+      }},'Ekspor progres'),
+      h('button',{class:'btn',onclick:()=>file.click()},'Impor progres'), file),
+    msg));
+  root.append(h('div',{class:'card',style:'margin-top:14px'},
+    h('h3',null,'Flashcards'),
+    h('label',{class:'field'},'Kartu baru per hari'),
+    h('input',{type:'number',min:0,max:200,value:S.settings.newPerDay,onchange:e=>{S.settings.newPerDay=Math.max(0,+e.target.value||0);save();}})));
+  root.append(h('div',{class:'card',style:'margin-top:14px'},
+    h('h3',null,'Bank soal yang termuat'),
+    BANKS.length?h('table',null,h('thead',null,h('tr',null,h('th',null,'Mata kuliah'),h('th',null,'Sesi'),h('th',null,'MCQ'),h('th',null,'Kartu'),h('th',null,'Essay'))),
+      h('tbody',null,BANKS.map(b=>h('tr',null,h('td',null,b.course),h('td',null,b.session),h('td',null,(b.mcq||[]).length),h('td',null,(b.flashcards||[]).length),h('td',null,(b.essay||[]).length))))):h('p',{class:'muted'},'Tidak ada bank yang termuat.'),
+    h('p',{class:'muted'},`${COURSE_META.length} mata kuliah terdaftar dan ${MATERI.length} materi termuat.`),
+    h('p',{class:'muted',style:'margin-bottom:0'},'Untuk menambah materi: minta Claude membuat bank soal baru. File akan masuk ke folder bank dan otomatis muncul di sini setelah halaman dimuat ulang.')));
+  root.append(h('div',{class:'card',style:'margin-top:14px'},
+    h('h3',null,'Reset'),
+    h('p',{class:'muted',style:'margin-top:0'},'Menghapus semua progres (skor, jadwal flashcard, riwayat). Bank soal tidak terhapus.'),
+    h('button',{class:'btn',onclick:async()=>{ if(await ask('Hapus semua progres? Tindakan ini tidak bisa dibatalkan.','Hapus')){ S=freshState(); save(); drawTimer(); msg.textContent='Progres direset.'; } }},'Reset semua progres')));
+  mount(root);
+}
+
+/* ================= Peringatan ujian ================= */
+let dashDay = null;
+function midEnded(mid){
+  const m = /(\d{1,2}):(\d{2})\s*\D+\s*(\d{1,2}):(\d{2})/.exec(mid.time || '');
+  if (!m) return false;
+  const end = new Date(mid.date + 'T00:00:00'); end.setHours(+m[3], +m[4], 0, 0);
+  return Date.now() > end.getTime();
+}
+const taskDone = t => !!(t.done || (S.tasks && S.tasks[t.id]));
+const fmtDue = t => t.due ? `${dateID(t.due)}${t.time ? ' · ' + t.time : ''}` : (t.dueNote || 'Tanggal belum diumumkan');
+function taskDD(t){ return t.due ? daysTo(t.due) : null; }
+function taskAlert(){
+  if (!TASKS.length) return null;
+  const pend = TASKS.filter(t => !taskDone(t));
+  const dated = pend.filter(t => t.due && t.state !== 'terlewat' && taskDD(t) >= 0).sort((a,b) => taskDD(a) - taskDD(b));
+  const late = pend.filter(t => t.state === 'terlewat');
+  const undated = pend.filter(t => !t.due);
+  if (!dated.length) return h('section',{class:'ea','aria-label':'Tugas'},
+    h('div',{class:'info'}, h('h2',null,'Tidak ada tugas ber-deadline dalam waktu dekat'),
+      h('p',{class:'muted'},`${undated.length} tugas besar belum punya tanggal pasti di Binusmaya.`)),
+    h('button',{class:'btn',onclick:()=>nav('tasks')},'Buka Tugas'));
+  const n = dated[0], dd = taskDD(n);
+  const lvl = dd <= 2 ? 'bad' : dd <= 7 ? 'warn' : '';
+  const cd = dd === 0 ? ['Hari ini',''] : dd === 1 ? ['Besok',''] : [String(dd),'hari lagi'];
+  const rest = dated.slice(1, 6);
+  return h('section',{class:('ea '+lvl).trim(),'aria-label':'Deadline tugas terdekat'},
+    h('div',{class:'cd'}, h('div',{class:'big'},cd[0]), cd[1] ? h('div',{class:'unit'},cd[1]) : null),
+    h('div',{class:'info'},
+      h('div',{class:'muted',style:'font-size:.85rem'},'Deadline tugas terdekat'),
+      h('h2',null,n.title),
+      h('p',null,`${n.course} · ${fmtDue(n)}`),
+      late.length ? h('p',{style:'color:var(--bad);font-weight:600'},`${late.length} tugas sudah lewat deadline dan belum dikerjakan`) : null,
+      rest.length ? h('div',{class:'row',style:'margin-top:8px'},
+        h('span',{class:'muted',style:'font-size:.85rem'},'Setelah itu:'),
+        rest.map(x => h('span',{class:'chip'},`${x.title.length>38?x.title.slice(0,36)+'…':x.title} · ${taskDD(x)===0?'hari ini':taskDD(x)+' hr'}`))) : null),
+    h('div',{class:'row'}, h('button',{class:'btn primary',onclick:()=>nav('tasks')},'Lihat tugas')));
+}
+function viewTasks(){
+  const root = h('div');
+  root.append(h('h1',null,'Tugas'), h('p',{class:'sub'},'Tugas yang belum dikerjakan dari Binusmaya, beserta ringkasan apa yang harus dilakukan.'));
+  const ta = taskAlert(); if (ta) root.append(ta);
+  let filter = 'open';
+  const list = h('div');
+  const bar = h('div',{class:'row',style:'margin:8px 0 14px'});
+  const draw = () => {
+    bar.replaceChildren(...[['open','Belum selesai'],['all','Semua'],['done','Sudah selesai']].map(([k,l]) =>
+      h('button',{class:'btn small'+(filter===k?' primary':''),onclick:()=>{filter=k;draw();}},l)));
+    const items = TASKS.filter(t => filter==='all' ? true : filter==='done' ? taskDone(t) : !taskDone(t));
+    const rank = t => t.state==='terlewat' ? -1 : t.due ? taskDD(t) : 9999;
+    items.sort((a,b) => rank(a) - rank(b));
+    if (!items.length){ list.replaceChildren(h('div',{class:'card empty'},'Tidak ada tugas di daftar ini.')); return; }
+    list.replaceChildren(...items.map(t => {
+      const dd = taskDD(t);
+      const chip = t.state==='terlewat' ? h('span',{class:'chip bad'},'Terlewat') :
+        t.due ? h('span',{class:'chip '+(dd<=2?'bad':dd<=7?'warn':'')}, dd===0?'Hari ini':dd===1?'Besok':`${dd} hari lagi`) : h('span',{class:'chip'},'Tanggal belum pasti');
+      const chk = h('input',{type:'checkbox',checked:taskDone(t)||null,disabled:t.done||null,onchange:e=>{ if(e.target.checked) S.tasks[t.id]=true; else delete S.tasks[t.id]; save(); draw(); }});
+      return h('div',{class:'card tk'+(taskDone(t)?' done':'')},
+        h('div',{class:'row'}, h('span',{class:'chip'},t.course), h('span',{class:'chip'},t.kind), chip, h('span',{class:'sp'}), t.weight?h('span',{class:'muted',style:'font-size:.85rem'},t.weight):null),
+        h('h3',null,t.title),
+        h('p',{class:'muted',style:'margin:2px 0 8px'},'Deadline: '+fmtDue(t)+(t.opens?` (forum dibuka ${dateID(t.opens)})`:'')),
+        h('div',{class:'lbl'},'Intinya'), h('p',{style:'margin:2px 0'},t.what),
+        t.steps&&t.steps.length?h('div',null,h('div',{class:'lbl'},'Yang harus dikerjakan'),h('ol',null,t.steps.map(x=>h('li',null,x)))):null,
+        t.deliver&&t.deliver.length?h('div',null,h('div',{class:'lbl'},'Yang dikumpulkan'),h('ul',null,t.deliver.map(x=>h('li',null,x)))):null,
+        t.notes&&t.notes.length?h('div',null,h('div',{class:'lbl'},'Catatan penting'),h('ul',null,t.notes.map(x=>h('li',null,x)))):null,
+        h('div',{class:'row',style:'margin-top:10px'},
+          h('label',{class:'tk-chk'},chk,h('span',null,t.done?`Terkumpul di Binusmaya (${dateID(t.done)})`:'Sudah dikerjakan')),
+          h('span',{class:'sp'}),
+          t.link?h('a',{class:'btn small',href:t.link,target:'_blank',rel:'noopener'},'Buka di Binusmaya'):null));
+    }));
+  };
+  draw();
+  root.append(bar, list, h('p',{class:'muted',style:'margin-top:14px'},'Status terakhir disinkronkan dengan Binusmaya: '+dateID(window.TASKS_SYNC||'2026-10-20')+'. Minta Claude memperbarui daftar ini kalau ada tugas baru atau tanggal berubah.'));
+  mount(root);
+}
+
+function upcomingExams(){
+  return Object.values(COURSES).filter(c => c.meta && c.meta.mid)
+    .map(c => ({ c, mid:c.meta.mid, dd:daysTo(c.meta.mid.date) }))
+    .filter(x => x.dd >= 0 && !(x.dd === 0 && midEnded(x.mid)))
+    .sort((a,b) => a.dd - b.dd || String(a.mid.time).localeCompare(String(b.mid.time)));
+}
+function examAlert(){
+  const up = upcomingExams();
+  if (!up.length){
+    const any = Object.values(COURSES).some(c => c.meta && c.meta.mid);
+    return any ? h('section',{class:'ea','aria-label':'Ujian'}, h('div',{class:'info'}, h('h2',null,'Semua ujian di jadwal sudah lewat'))) : null;
+  }
+  const n = up[0], dd = n.dd;
+  const lvl = dd <= 7 ? 'bad' : dd <= 14 ? 'warn' : '';
+  const cd = dd === 0 ? ['Hari ini',''] : dd === 1 ? ['Besok',''] : [String(dd),'hari lagi'];
+  const has = hasContent(n.c);
+  const rest = up.slice(1, 6);
+  return h('section',{class:('ea '+lvl).trim(),'aria-label':'Ujian terdekat'},
+    h('div',{class:'cd'}, h('div',{class:'big'},cd[0]), cd[1] ? h('div',{class:'unit'},cd[1]) : null),
+    h('div',{class:'info'},
+      h('div',{class:'muted',style:'font-size:.85rem'},'Ujian terdekat'),
+      h('h2',null,n.c.name),
+      h('p',null,`${dateID(n.mid.date)} · ${n.mid.time} · ruang ${n.mid.room}`),
+      has ? null : h('p',{class:'muted'},n.c.materi.length ? 'Ringkasan materi sudah ada di tab Materi; soal dan flashcards belum dibuat. Minta Claude membuatnya.' : 'Materi belum diunggah. Kirim file materinya ke Claude supaya ringkasan, soal, dan flashcards masuk ke sini.'),
+      rest.length ? h('div',{class:'row',style:'margin-top:8px'},
+        h('span',{class:'muted',style:'font-size:.85rem'},'Setelah itu:'),
+        rest.map(x => h('span',{class:'chip'},`${x.c.name} · ${x.dd === 0 ? 'hari ini' : x.dd+' hr'}`))) : null),
+    has ? h('div',{class:'row'},
+      h('button',{class:'btn primary',onclick:()=>{pending={course:n.c.name};nav('quiz');}},'Latihan quiz'),
+      h('button',{class:'btn',onclick:()=>{pending={course:n.c.name};nav('cards');}},'Flashcards')) : null);
+}
+
+/* ================= Timer belajar ================= */
+/* Stopwatch di header yang tetap jalan saat pindah halaman. Waktu dicatat per hari di S.studyMs (milidetik).
+   Celah lebih dari 10 menit antar detik (komputer tidur, tab dibekukan) tidak dihitung: timer dijeda otomatis. */
+const SLEEP_MS = 10*60e3, RESUME_MS = 30e3;
+let tvalEl = null, tickCount = 0;
+function fixTimer(){
+  const num = v => Number.isFinite(+v) && +v > 0 ? +v : 0;
+  const T = S.timer;
+  if (!T || typeof T !== 'object') S.timer = { running:false, acc:0, t:0, auto:false };
+  else { T.running = !!T.running; T.acc = num(T.acc); T.t = num(T.t); T.auto = !!T.auto; }
+  if (!S.studyMs || typeof S.studyMs !== 'object' || Array.isArray(S.studyMs)) S.studyMs = {};
+}
+function timerBoot(){
+  const T = S.timer;
+  if (!T.running) return;
+  if (Date.now() - T.t > RESUME_MS){ T.running = false; T.auto = true; T.t = 0; }
+  else T.t = Date.now();
+  save();
+}
+const pad2 = n => String(n).padStart(2,'0');
+function fmtHMS(ms){ const s = Math.floor(ms/1000); return pad2(Math.floor(s/3600))+':'+pad2(Math.floor(s%3600/60))+':'+pad2(s%60); }
+function fmtDur(ms){ const m = Math.floor(ms/60000); if (ms > 0 && m === 0) return '<1 mnt'; return m < 60 ? m+' mnt' : Math.floor(m/60)+'j '+pad2(m%60)+'m'; }
+const todayMs = () => S.studyMs[dkey()] || 0;
+const weekMs = () => { let t = 0; for (let i=0;i<7;i++) t += S.studyMs[dkey(Date.now()-i*DAY)] || 0; return t; };
+function timerStep(){
+  const T = S.timer; if (!T.running) return;
+  const now = Date.now(), d = now - T.t;
+  if (d > SLEEP_MS || d < 0){ T.running = false; T.auto = true; T.t = 0; save(); return; }
+  T.t = now; T.acc += d;
+  const k = dkey(now); S.studyMs[k] = (S.studyMs[k] || 0) + d;
+}
+function drawTimer(){
+  const box = $('#studytimer'); if (!box) return;
+  const T = S.timer, hadFocus = box.contains(document.activeElement);
+  tvalEl = h('span',{class:'tval',role:'timer','aria-label':'Waktu belajar sesi ini'}, fmtHMS(T.acc));
+  const toggle = h('button',{class:'btn small'+(T.running?'':' primary'),onclick:timerToggle}, T.running ? 'Jeda' : (T.acc ? 'Lanjut' : 'Mulai belajar'));
+  box.className = 'stimer' + (T.running ? ' on' : '');
+  box.replaceChildren(
+    h('span',{class:'tdot','aria-hidden':'true'}), tvalEl, toggle,
+    T.acc ? h('button',{class:'btn small',onclick:timerReset},'Reset') : null,
+    (T.auto && !T.running) ? h('span',{class:'muted tnote'},'dijeda otomatis') : null);
+  if (hadFocus) toggle.focus();
+  document.title = T.running ? fmtHMS(T.acc)+' · Belajar Ujian' : 'Belajar Ujian';
+}
+function refreshStudyStats(){
+  const a = $('#stat-today'), b = $('#stat-week');
+  if (a) a.textContent = fmtDur(todayMs());
+  if (b) b.textContent = fmtDur(weekMs());
+}
+function timerToggle(){
+  const T = S.timer;
+  if (T.running){ timerStep(); S.timer.running = false; S.timer.t = 0; }
+  else { T.running = true; T.t = Date.now(); T.auto = false; }
+  save(); drawTimer(); refreshStudyStats();
+}
+async function timerReset(){
+  const T = S.timer;
+  if (T.acc >= 60e3 && !(await ask('Reset timer sesi ini ke 00:00:00? Waktu yang sudah tercatat hari ini tidak hilang.','Reset'))) return;
+  T.running = false; T.acc = 0; T.t = 0; T.auto = false; save(); drawTimer();
+}
+function timerTick(){
+  if (S.timer.running){
+    timerStep();
+    if (!S.timer.running) drawTimer();
+    else {
+      const txt = fmtHMS(S.timer.acc);
+      if (tvalEl) tvalEl.textContent = txt;
+      document.title = txt + ' · Belajar Ujian';
+      if (++tickCount % 40 === 0) save();
+    }
+    refreshStudyStats();
+  }
+  if (dashDay && dashDay !== dkey() && curRoute() === '') render();
+}
+function timerFlush(){ if (S.timer && S.timer.running){ timerStep(); save(); } }
+window.addEventListener('pagehide', timerFlush);
+document.addEventListener('visibilitychange', () => { if (document.hidden) timerFlush(); });
+
+
+/* ===== Warna per mata kuliah ===== */
+const CC_HUES = [250,168,332,28,205,285,145,8];
+function courseHue(name){
+  const names = COURSE_META.map(m=>m.name);
+  let i = names.indexOf(name); if (i < 0) return null;
+  return CC_HUES[i % CC_HUES.length];
+}
+function colorize(){
+  const root = document.getElementById('app'); if (!root) return;
+  const lc = (typeof COURSE_META !== 'undefined') ? COURSE_META.map(m=>m.name) : [];
+  if (!lc.length) return;
+  root.querySelectorAll('.chip, .card h3, .card h2').forEach(el => {
+    const t = el.textContent.trim().replace(/^.*›\s*/,'');
+    const hue = courseHue(t); if (hue == null) return;
+    const card = el.closest('.card');
+    if (el.classList.contains('chip')){ el.classList.add('cc'); el.style.setProperty('--cc',`hsl(${hue} 62% var(--cl))`); }
+    if (card && !card.classList.contains('cc') && (el.tagName==='H3' || el.tagName==='H2' || card.classList.contains('tk'))){
+      card.classList.add('cc'); card.style.setProperty('--cc',`hsl(${hue} 62% var(--cl))`);
+    }
+  });
+}
+let ccTimer = null;
+new MutationObserver(() => { clearTimeout(ccTimer); ccTimer = setTimeout(colorize, 30); }).observe(document.getElementById('app'),{childList:true,subtree:true});
+/* ================= Boot ================= */
+function loadScript(src){
+  return new Promise(res => {
+    const s = document.createElement('script'); s.src = src;
+    s.onload = () => res(true); s.onerror = () => res(false);
+    document.head.append(s);
+  });
+}
+(async function boot(){
+  loadState();
+  timerBoot();
+  drawTimer();
+  let ok = await loadScript('bank/manifest.js');
+  await loadScript('bank/courses.js');
+  if (ok && Array.isArray(window.BANK_FILES)){
+    for (const f of window.BANK_FILES) await loadScript('bank/' + f);
+  }
+  await loadScript('bank/tasks.js');
+  if (ok && Array.isArray(window.MATERI_FILES)){
+    for (const f of window.MATERI_FILES) await loadScript('bank/' + f);
+  }
+  buildCourses();
+  render();
+  setInterval(timerTick, 250);
+})();
+</script>
+</body>
+</html>
