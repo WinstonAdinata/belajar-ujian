@@ -320,9 +320,10 @@ const daysTo = d => Math.round((new Date(d + 'T00:00:00') - new Date(dkey() + 'T
 const dateID = d => new Date(d + 'T00:00:00').toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short'});
 const topicsOf = (items) => { const m = {}; for (const i of items){ m[i.topic] = (m[i.topic]||0)+1; } return m; };
 
-function recordMcq(id, ok){
+function recordMcq(id, ok, pickText){
   const s = S.mcq[id] || (S.mcq[id] = {n:0,c:0});
   s.n++; if (ok) s.c++; s.last = Date.now(); s.lastOk = ok; bumpDay();
+  if (pickText != null) s.pick = pickText;
 }
 function weakScore(q){
   const s = S.mcq[q.id];
@@ -392,6 +393,7 @@ const ROUTES = [
   ['tasks', 'Tugas', viewTasks],
   ['materi', 'Materi', viewMateri],
   ['quiz', 'Quiz', viewQuiz],
+  ['review', 'Review Quiz', viewReview],
   ['exam', 'Simulasi Ujian', viewExam],
   ['cards', 'Flashcards', viewCards],
   ['essay', 'Essay', viewEssay],
@@ -469,6 +471,7 @@ function viewDashboard(){
         h('button',{class:'btn primary',onclick:()=>{pending={course:ALL_KEY};nav('quiz');}},'Quiz campuran'),
         h('button',{class:'btn',onclick:()=>{pending={course:ALL_KEY};nav('cards');}},'Flashcards semua'),
         h('button',{class:'btn',onclick:()=>{pending={course:ALL_KEY};nav('exam');}},'Ujian campuran'),
+        h('button',{class:'btn',onclick:()=>{pending={course:ALL_KEY,filter:'was'};nav('review');}},'Review quiz'),
         h('button',{class:'btn',onclick:()=>nav('materi')},'Baca materi'))));
 
   root.append(h('h2',null,'Mata kuliah'));
@@ -506,6 +509,7 @@ function viewDashboard(){
       h('div',{class:'row',style:'margin-top:14px'},
         c.materi.length?h('button',{class:'btn small primary',onclick:()=>{pending={materiCourse:c.name};nav('materi');}},'Materi'):null,
         content?h('button',{class:'btn small',onclick:()=>{pending={course:c.name};nav('quiz');}},'Quiz'):null,
+        c.mcq.length?h('button',{class:'btn small',onclick:()=>{pending={course:c.name,filter:'was'};nav('review');}},'Review'):null,
         content?h('button',{class:'btn small',onclick:()=>{pending={course:c.name};nav('cards');}},'Flashcards'):null,
         content?h('button',{class:'btn small',onclick:()=>{pending={course:c.name};nav('exam');}},'Ujian'):null)));
   }
@@ -628,7 +632,7 @@ function runQuiz(items, st){
     }
     function pick(pos){
       if (locked) return; locked = true; it.picked = pos;
-      recordMcq(it.q.id, pos===it.correctPos); save(); reveal();
+      recordMcq(it.q.id, pos===it.correctPos, it.q.options[it.order[pos]]); save(); reveal();
     }
     if (it.picked!==null) reveal();
     root.replaceChildren(box);
@@ -669,6 +673,53 @@ function runQuiz(items, st){
 }
 
 /* ================= Simulasi ujian ================= */
+/* ================= Review Quiz ================= */
+function viewReview(){
+  const st = { course:(pending&&pending.course)||ALL_KEY, filter:(pending&&pending.filter)||'was', topic:'', shown:15 };
+  pending = null;
+  const root = h('div');
+  const stat = q => { const r=S.mcq[q.id]; if (!r||!r.n) return 'new'; if (!r.lastOk) return 'bad'; return r.c<r.n ? 'was' : 'ok'; };
+  const FIL = [['was','Pernah salah'],['bad','Masih salah'],['ok','Benar semua'],['new','Belum dicoba'],['all','Semua']];
+  const match = (q,f) => f==='all' || (f==='was' ? (stat(q)==='bad'||stat(q)==='was') : stat(q)===f);
+  const CHIP = {bad:['bad','Masih salah'],was:['warn','Pernah salah'],ok:['ok','Benar'],new:['','Belum dicoba']};
+  function card(q){
+    const r = S.mcq[q.id], s = stat(q), ch = CHIP[s];
+    return h('div',{class:'card',style:'margin-bottom:14px'},
+      h('div',{class:'row prog'}, h('span',{class:'chip'},q.topic), h('span',{class:'sp'}),
+        h('span',{class:'chip '+ch[0]},ch[1]), r&&r.n?h('span',{class:'muted'},`${r.c}/${r.n} benar`):null),
+      h('div',{class:'qtext',style:'margin-top:12px'},q.q), figEl(q.image),
+      ...q.options.map((o,i)=>{
+        const ans = i===q.answer, picked = !ans && r && r.pick===o;
+        return h('div',{class:'opt '+(ans?'right':picked?'wrong':''),style:'cursor:default;pointer-events:none'},
+          h('span',{class:'k'},LET[i]), h('span',null,o+(ans?'  (jawaban benar)':'')+(picked?'  (jawaban terakhir Anda)':'')));
+      }),
+      h('div',{class:'explain ok'}, h('strong',null,'Penjelasan. '), q.explain,
+        q.source?h('div',{class:'muted',style:'font-size:.85rem;margin-top:4px'},'Sumber: '+q.source):null));
+  }
+  function draw(){
+    const c = getCourse(st.course), tp = topicsOf(c.mcq);
+    if (st.topic && !tp[st.topic]) st.topic = '';
+    const base = c.mcq.filter(q=>!st.topic || q.topic===st.topic);
+    const list = base.filter(q=>match(q,st.filter));
+    const cnt = f => base.filter(q=>match(q,f)).length;
+    root.replaceChildren(
+      h('h1',null,'Review Quiz'),
+      h('p',{class:'sub'},'Lihat jawaban benar dan penjelasan tiap soal. Jawaban terakhir Anda ditandai merah, tersedia untuk soal yang dikerjakan setelah fitur ini ada.'),
+      h('div',{class:'card'},
+        h('label',{class:'field'},'Mata kuliah'), courseSelect(st.course, v=>{st.course=v;st.topic='';st.shown=15;draw();}),
+        h('label',{class:'field'},'Topik'),
+        h('select',{onchange:e=>{st.topic=e.target.value;st.shown=15;draw();}},
+          h('option',{value:''},'Semua topik'),
+          Object.entries(tp).map(([t,n])=>h('option',{value:t,selected:t===st.topic},`${t} (${n})`))),
+        h('div',{class:'row',style:'margin-top:14px'},
+          FIL.map(([f,l])=>h('button',{class:'btn small'+(st.filter===f?' primary':''),onclick:()=>{st.filter=f;st.shown=15;draw();}},`${l} (${cnt(f)})`)))),
+      h('div',{style:'margin-top:14px'},
+        list.length ? [list.slice(0,st.shown).map(card),
+          list.length>st.shown?h('button',{class:'btn',onclick:()=>{st.shown+=15;draw();}},`Tampilkan ${Math.min(15,list.length-st.shown)} lagi (${list.length-st.shown} tersisa)`):null]
+        : h('div',{class:'card empty'},h('p',null,'Tidak ada soal di kategori ini.'))));
+  }
+  draw(); mount(root);
+}
 function viewExam(){
   const st = { course: (pending&&pending.course) || defaultCourse(), n:0, min:0 };
   pending = null;
@@ -737,7 +788,7 @@ function runExam(c, n, minutes){
     let ok = 0; const byTopic = {};
     items.forEach(x=>{
       const right = x.picked === x.correctPos;
-      if (x.picked !== null) recordMcq(x.q.id, right);
+      if (x.picked !== null) recordMcq(x.q.id, right, x.q.options[x.order[x.picked]]);
       if (right) ok++;
       const t = byTopic[x.q.topic] || (byTopic[x.q.topic]={n:0,c:0}); t.n++; if (right) t.c++;
     });
