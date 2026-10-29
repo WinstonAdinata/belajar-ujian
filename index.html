@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Belajar Ujian</title>
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <style>
 :root{
   --bg:#f6f5f1; --surface:#ffffff; --surface2:#efede7; --ink:#1d2330; --muted:#5d6577; --line:#dcd9cf;
@@ -11,14 +12,18 @@
   --ok:#1f7a4d; --ok-soft:#dff3e8; --bad:#b3372f; --bad-soft:#f9e1de; --warn:#9a6a00; --warn-soft:#fbf0d3;
   --radius:12px; --shadow:0 1px 2px rgba(20,25,40,.06),0 4px 14px rgba(20,25,40,.05);
 }
-@media (prefers-color-scheme:dark){
-  :root{
+:root[data-theme="dark"]{
     --bg:#14171d; --surface:#1c212b; --surface2:#242a36; --ink:#e8eaf0; --muted:#98a1b3; --line:#323a4a;
     --accent:#7fb0e0; --accent-ink:#10161f; --accent-soft:#223247;
     --ok:#5fcf9a; --ok-soft:#1b3a2b; --bad:#f09088; --bad-soft:#40211f; --warn:#e5b94f; --warn-soft:#3b3015;
     --shadow:none;
   }
-}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#14171d; --surface:#1c212b; --surface2:#242a36; --ink:#e8eaf0; --muted:#98a1b3; --line:#323a4a;
+    --accent:#7fb0e0; --accent-ink:#10161f; --accent-soft:#223247;
+    --ok:#5fcf9a; --ok-soft:#1b3a2b; --bad:#f09088; --bad-soft:#40211f; --warn:#e5b94f; --warn-soft:#3b3015;
+    --shadow:none;
+  }}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
@@ -148,15 +153,20 @@ details.rv .in{padding:0 14px 14px}
   --shadow:0 1px 2px rgba(60,50,140,.06),0 8px 24px rgba(60,50,140,.08);
   --grad:linear-gradient(135deg,#5b4fe0 0%,#8b5cf6 55%,#e0568f 100%);
 }
-@media (prefers-color-scheme:dark){
-  :root{
+:root[data-theme="dark"]{
     --bg:#0f1120; --surface:#181b30; --surface2:#20243d; --ink:#eceefb; --muted:#9aa1c4; --line:#2c3152;
     --accent:#9a8cff; --accent2:#ff7eb0; --accent-soft:#272a52; --accent-ink:#10112a;
     --ok:#4fdcb1; --ok-soft:#133a33; --bad:#ff8ca3; --bad-soft:#42202c; --warn:#f2c05c; --warn-soft:#3b2f12;
     --cl:68%; --shadow:0 1px 0 rgba(255,255,255,.03),0 8px 24px rgba(0,0,0,.35);
     --grad:linear-gradient(135deg,#7c6cff 0%,#a78bfa 55%,#ff7eb0 100%);
   }
-}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0f1120; --surface:#181b30; --surface2:#20243d; --ink:#eceefb; --muted:#9aa1c4; --line:#2c3152;
+    --accent:#9a8cff; --accent2:#ff7eb0; --accent-soft:#272a52; --accent-ink:#10112a;
+    --ok:#4fdcb1; --ok-soft:#133a33; --bad:#ff8ca3; --bad-soft:#42202c; --warn:#f2c05c; --warn-soft:#3b2f12;
+    --cl:68%; --shadow:0 1px 0 rgba(255,255,255,.03),0 8px 24px rgba(0,0,0,.35);
+    --grad:linear-gradient(135deg,#7c6cff 0%,#a78bfa 55%,#ff7eb0 100%);
+  }}
 body{background:radial-gradient(900px 480px at 8% -8%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 60%),radial-gradient(760px 420px at 100% 0,color-mix(in srgb,var(--accent2) 13%,transparent),transparent 62%),var(--bg);background-attachment:fixed}
 header.top{background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky}
 header.top::before{content:"";display:block;height:3px;background:var(--grad)}
@@ -210,13 +220,111 @@ details.rv{border-radius:12px}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 </style>
+<style id="quest">
+/* ===== Tema Quest: XP, level, streak, animasi ===== */
+:root{
+  --bg:#f4f7ff; --surface:#ffffff; --surface2:#eaf0ff; --ink:#1f2a44; --muted:#5c6a8a; --line:#d9e2fb;
+  --accent:#4c7dff; --accent2:#ffb703; --accent-soft:#e3ebff; --accent-ink:#ffffff;
+  --ok:#2e9e55; --ok-soft:#dff5e5; --bad:#d9534f; --bad-soft:#fdeceb; --warn:#a86b00; --warn-soft:#fff1c9;
+  --radius:16px; --grad:var(--accent);
+  --shadow:0 2px 0 rgba(76,125,255,.10),0 8px 20px rgba(40,70,160,.07);
+  --lift:rgba(76,125,255,.35);
+}
+:root[data-theme="dark"]{
+    --bg:#1b1f2e; --surface:#262b3d; --surface2:#2d3350; --ink:#e9e6dd; --muted:#a2a6bd; --line:#3a4160;
+    --accent:#7c9cff; --accent2:#f2c66d; --accent-soft:#2f3758; --accent-ink:#141a2e;
+    --ok:#6fd194; --ok-soft:#1f3a2b; --bad:#f19a95; --bad-soft:#42262b; --warn:#f2c66d; --warn-soft:#3a3120;
+    --shadow:0 2px 0 rgba(0,0,0,.25); --lift:rgba(124,156,255,.28);
+  }
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#1b1f2e; --surface:#262b3d; --surface2:#2d3350; --ink:#e9e6dd; --muted:#a2a6bd; --line:#3a4160;
+    --accent:#7c9cff; --accent2:#f2c66d; --accent-soft:#2f3758; --accent-ink:#141a2e;
+    --ok:#6fd194; --ok-soft:#1f3a2b; --bad:#f19a95; --bad-soft:#42262b; --warn:#f2c66d; --warn-soft:#3a3120;
+    --shadow:0 2px 0 rgba(0,0,0,.25); --lift:rgba(124,156,255,.28);
+  }}
+body{background:var(--bg)}
+header.top{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}
+header.top::before{background:var(--accent)}
+.brand{background:none;-webkit-background-clip:initial;background-clip:initial;color:var(--accent);font-weight:800}
+h1::after{background:var(--accent2);width:54px}
+.card{border:2px solid var(--line);border-bottom-width:4px;border-radius:var(--radius)}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.btn{border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;font-weight:600;transition:transform .12s,border-color .15s,background .15s}
+.btn:hover{background:var(--accent-soft);border-color:var(--accent)}
+.btn:active{transform:translateY(3px);border-bottom-width:1px;margin-bottom:3px}
+.btn.primary{background:var(--accent);border-color:var(--accent);border-bottom-color:color-mix(in srgb,var(--accent) 62%,#000);color:var(--accent-ink);box-shadow:none}
+.btn.primary:hover{filter:brightness(1.07);background:var(--accent)}
+nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink);box-shadow:none}
+.opt{border:2px solid var(--line);border-bottom-width:4px;border-radius:14px}
+.opt:hover:not([disabled]){transform:translateX(4px);border-color:var(--accent)}
+.opt.right{animation:qBounce .5s}
+.opt.wrong{animation:qShake .35s}
+.opt.right .k::after{content:""}
+.fcard{background:var(--surface);border:2px solid var(--line);border-bottom-width:5px;border-radius:20px}
+.bar{height:12px;background:var(--surface2)}
+.bar>i{background:var(--accent);transform-origin:left;animation:qGrow .9s cubic-bezier(.2,.8,.2,1) both}
+.ea{background:var(--accent-soft);border:2px solid var(--accent);box-shadow:none}
+.ea.warn{background:var(--warn-soft);border-color:var(--warn)}
+.ea.bad{background:var(--bad-soft);border-color:var(--bad)}
+.ea .big{background:none;color:var(--accent)}
+.chart div{background:var(--accent)}
+.stimer.on .tval{background:var(--accent);color:var(--accent-ink)}
+.md h2{border-bottom-color:var(--accent2)}
+.md h3{color:var(--accent)}
+
+/* HUD */
+#hud{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+.hchip{display:inline-flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.hchip.lv{background:var(--accent-soft);color:var(--accent)}
+.hchip.st{background:var(--warn-soft);color:var(--warn)}
+.hchip.st .fl{display:inline-block;transform-origin:50% 90%;animation:qFlame 1.4s ease-in-out infinite}
+.hxp{display:flex;flex-direction:column;gap:2px;min-width:92px}
+.hxp .t{font-size:.72rem;color:var(--muted);line-height:1}
+.hxp .bar{height:8px}
+.hxp .bar>i{animation:none;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+
+/* Kartu quest di dashboard */
+.quest{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:0 0 18px;border-color:var(--accent)}
+.qbadge{width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:800;font-size:1.5rem;border-bottom:4px solid color-mix(in srgb,var(--accent) 60%,#000);animation:qPulse 3s ease-in-out infinite}
+.quest .mid{flex:1;min-width:200px}
+.quest .mid b{font-size:1.05rem}
+.qstreak{font-weight:800;font-size:1.2rem;color:var(--warn)}
+.qstreak .fl{display:inline-block;transform-origin:50% 90%;animation:qFlame 1.4s ease-in-out infinite}
+
+/* Efek */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.qpop{position:fixed;font-weight:800;color:var(--accent);background:var(--surface);border:2px solid var(--accent);border-radius:99px;padding:2px 10px;font-size:.9rem;white-space:nowrap}
+.qlvl{position:fixed;left:50%;top:84px;transform:translateX(-50%);background:var(--accent2);color:#3b2a00;font-weight:800;font-size:1.15rem;padding:12px 26px;border-radius:18px;border-bottom:5px solid #c58a00;white-space:nowrap}
+
+/* Animasi masuk tiap halaman */
+#app>*{animation:qIn .45s cubic-bezier(.2,.8,.2,1) both}
+#app .card,#app .stat,#app .topic{animation:qIn .5s cubic-bezier(.2,.8,.2,1) both}
+#app .grid>*:nth-child(2),#app .card:nth-child(3){animation-delay:.05s}
+#app .grid>*:nth-child(3),#app .card:nth-child(4){animation-delay:.1s}
+#app .grid>*:nth-child(4),#app .card:nth-child(5){animation-delay:.15s}
+#app .grid>*:nth-child(5),#app .card:nth-child(6){animation-delay:.2s}
+#app .grid>*:nth-child(n+6),#app .card:nth-child(n+7){animation-delay:.25s}
+
+@keyframes qIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes qGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes qBounce{0%{transform:scale(1)}35%{transform:scale(1.04)}65%{transform:scale(.98)}100%{transform:scale(1)}}
+@keyframes qShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes qPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes qFlame{0%,100%{transform:rotate(-4deg) scale(1)}50%{transform:rotate(4deg) scale(1.14)}}
+@media (max-width:640px){.hxp{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
 </head>
 <body>
 <header class="top"><div class="top-in">
-  <span class="brand">Belajar Ujian</span>
+  <span class="brand">Belajar Ujian</span><span id="srvst" style="font-size:11px;opacity:.6;white-space:nowrap"></span>
   <nav id="nav"></nav>
+  <button class="btn small" id="themebtn" type="button" style="margin-left:auto"></button>
+  <div id="hud"></div>
   <div id="studytimer" class="stimer"></div>
 </div></header>
+<div id="fx" aria-hidden="true"></div>
 <main id="app"><p class="muted">Memuat bank soal...</p></main>
 
 <script>
@@ -270,7 +378,25 @@ function loadState(){
     fixTimer();
   } catch(e){ storageOK = false; }
 }
-function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ storageOK = false; } }
+const SRV_URL = 'http://127.0.0.1:8766/api/progress';
+let srvReady = false, srvT;
+function srvState(t, ok){ const e = document.getElementById('srvst'); if (e){ e.textContent = t; e.title = t; e.style.opacity = ok ? '.9' : '.6'; } }
+function pushSrv(){ clearTimeout(srvT); srvT = setTimeout(() => { fetch(SRV_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(S)}).then(r => { if (!r.ok) throw 0; srvState('Progres tersimpan ke file', true); }).catch(() => srvState('Server simpan tidak aktif', false)); }, 400); }
+function save(){ S.at = Date.now(); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){ storageOK = false; } if (srvReady) pushSrv(); }
+/* Sinkron progres dengan file progres.json lewat server lokal (kalau aktif); yang lebih baru menang. */
+async function syncSrv(){
+  if (location.protocol === 'https:') return false;
+  try {
+    const ctl = new AbortController(); setTimeout(() => ctl.abort(), 1500);
+    const r = await fetch(SRV_URL, {signal: ctl.signal});
+    if (r.ok){
+      const d = await r.json();
+      if ((d.at||0) > (S.at||0)){ S = Object.assign(freshState(), d); try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} srvReady = true; srvState('Progres dimuat dari file', true); return true; }
+      srvReady = true; pushSrv(); return false;
+    }
+    srvReady = true; pushSrv(); return false;
+  } catch(e){ srvState('Server simpan tidak aktif, progres hanya di browser', false); return false; }
+}
 function bumpDay(){ const k = dkey(); S.days[k] = (S.days[k]||0) + 1; }
 
 /* ================= Data model ================= */
@@ -447,6 +573,7 @@ function viewDashboard(){
   }
   const root = h('div');
   root.append(h('h1',null,'Dashboard'), h('p',{class:'sub'},'Ringkasan belajar dari semua mata kuliah.'));
+  root.append(questCard());
   dashDay = dkey();
   root.append(examAlert());
   { const ta = taskAlert(); if (ta) root.append(ta); }
@@ -1162,6 +1289,18 @@ function viewSettings(){
     h('h3',null,'Reset'),
     h('p',{class:'muted',style:'margin-top:0'},'Menghapus semua progres (skor, jadwal flashcard, riwayat). Bank soal tidak terhapus.'),
     h('button',{class:'btn',onclick:async()=>{ if(await ask('Hapus semua progres? Tindakan ini tidak bisa dibatalkan.','Hapus')){ S=freshState(); save(); drawTimer(); msg.textContent='Progres direset.'; } }},'Reset semua progres')));
+  if (srvReady) root.append(h('div',{class:'card',style:'margin-top:14px'},
+    h('h3',null,'Versi online (GitHub)'),
+    h('p',{class:'muted',style:'margin-top:0'},'Satu klik untuk menyamakan versi online di internet dengan versi di PC ini (materi, soal, gambar, dan tampilan terbaru). Progres belajar tidak ikut diunggah. Hasil online muncul 1-2 menit setelah selesai.'),
+    h('div',{class:'row'},h('button',{class:'btn primary',id:'pubbtn',onclick:async()=>{
+      const o = document.getElementById('pubmsg'); const b = document.getElementById('pubbtn'); b.disabled = true; o.textContent = 'Mengunggah... tunggu sebentar.';
+      try {
+        await fetch(SRV_URL.replace('progress','publish'),{method:'POST'});
+        for (;;){ await new Promise(r => setTimeout(r,2000)); const d = await (await fetch(SRV_URL.replace('progress','publish'))).json(); o.textContent = d.log||''; if (!d.running){ o.textContent = (d.ok?'Berhasil. ':'Gagal. ') + (d.log||''); break; } }
+      } catch(e){ o.textContent = 'Server simpan tidak aktif. Buka lewat ikon Desktop.'; }
+      b.disabled = false;
+    }},'Update versi online sekarang')),
+    h('p',{class:'muted',id:'pubmsg',style:'white-space:pre-wrap;margin-bottom:0'},'')));
   mount(root);
 }
 
@@ -1382,8 +1521,93 @@ function loadScript(src){
     document.head.append(s);
   });
 }
+
+/* ================= Quest: XP, level, streak, efek ================= */
+function calcXp(){
+  let x = 0;
+  for (const m of Object.values(S.mcq)) x += m.c*10 + (m.n - m.c)*2;
+  for (const k of Object.values(S.cards)) x += ((k.reps||0) + (k.lapses||0))*4;
+  for (const e of Object.values(S.essay)) x += (e.n||0)*20;
+  x += Object.keys(S.materi).length*15;
+  for (const ms of Object.values(S.studyMs)) x += Math.floor(ms/60000);
+  return x;
+}
+function levelOf(xp){ let lv = 1, need = 100; while (xp >= need){ xp -= need; lv++; need = 100 + (lv-1)*50; } return {lv, into:xp, need}; }
+function calcStreak(){
+  let st = 0;
+  for (let i=0;i<400;i++){ const k = dkey(Date.now() - i*DAY); if (S.days[k] > 0) st++; else if (i>0) break; }
+  return st;
+}
+let qLast = null, qLv = null, qPx = innerWidth/2, qPy = innerHeight/2, qRaf = 0;
+document.addEventListener('pointerdown', e => { qPx = e.clientX; qPy = e.clientY; }, true);
+document.addEventListener('keydown', () => { qPx = innerWidth/2; qPy = innerHeight*0.45; }, true);
+function qConfetti(n){
+  const fx = document.getElementById('fx'); if (!fx || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const cols = ['#4c7dff','#ffb703','#ff7a7a','#5cb85c','#a78bfa'];
+  for (let i=0;i<n;i++){
+    const c = document.createElement('span');
+    c.style.cssText = `position:fixed;left:${qPx}px;top:${qPy}px;width:8px;height:8px;border-radius:2px;background:${cols[i%cols.length]}`;
+    fx.append(c);
+    const dx = (Math.random()-.5)*280, dy = -60 - Math.random()*170;
+    c.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*540}deg)`,opacity:1,offset:.55},{transform:`translate(${dx*1.15}px,${dy+230}px) rotate(720deg)`,opacity:0}],{duration:1100+Math.random()*300,easing:'cubic-bezier(.2,.7,.3,1)'}).onfinish = () => c.remove();
+  }
+}
+function qPop(text){
+  const fx = document.getElementById('fx'); if (!fx) return;
+  const el = document.createElement('div'); el.className = 'qpop'; el.textContent = text;
+  el.style.left = Math.max(8, Math.min(innerWidth-90, qPx-24)) + 'px'; el.style.top = Math.max(8, qPy-36) + 'px';
+  fx.append(el);
+  el.animate([{transform:'translateY(0) scale(.7)',opacity:0},{transform:'translateY(-14px) scale(1.12)',opacity:1,offset:.25},{transform:'translateY(-54px) scale(1)',opacity:0}],{duration:1100,easing:'ease-out'}).onfinish = () => el.remove();
+}
+function qLevelUp(lv){
+  const fx = document.getElementById('fx'); if (!fx) return;
+  const el = document.createElement('div'); el.className = 'qlvl'; el.textContent = 'Level ' + lv + '! Mantap';
+  fx.append(el);
+  el.animate([{transform:'translate(-50%,-30px) scale(.6)',opacity:0},{transform:'translate(-50%,0) scale(1.08)',opacity:1,offset:.2},{transform:'translate(-50%,0) scale(1)',opacity:1,offset:.8},{transform:'translate(-50%,-20px) scale(1)',opacity:0}],{duration:2600}).onfinish = () => el.remove();
+  qPx = innerWidth/2; qPy = 120; qConfetti(40);
+}
+function drawHud(xp, L, st){
+  const hud = document.getElementById('hud'); if (!hud) return;
+  if (!hud.firstChild) hud.innerHTML = '<span class="hchip lv">Level <span id="hlv"></span></span><span class="hxp"><span class="t" id="hxt"></span><span class="bar"><i id="hxb" style="width:0"></i></span></span><span class="hchip st"><span class="fl">&#128293;</span><span id="hst"></span></span>';
+  document.getElementById('hlv').textContent = L.lv;
+  document.getElementById('hxt').textContent = L.into + ' / ' + L.need + ' XP';
+  document.getElementById('hxb').style.width = Math.round(L.into*100/L.need) + '%';
+  document.getElementById('hst').textContent = st;
+  hud.title = 'Total ' + xp + ' XP, streak ' + st + ' hari';
+}
+function questTick(){
+  if (qRaf) return;
+  qRaf = requestAnimationFrame(() => {
+    qRaf = 0;
+    const xp = calcXp(), L = levelOf(xp), st = calcStreak();
+    drawHud(xp, L, st);
+    if (qLast !== null && xp > qLast && xp - qLast <= 60){
+      qPop('+' + (xp - qLast) + ' XP');
+      if (xp - qLast >= 8) qConfetti(xp - qLast >= 20 ? 26 : 16);
+      if (L.lv > qLv) qLevelUp(L.lv);
+    }
+    qLast = xp; qLv = L.lv;
+  });
+}
+const _save0 = save; save = function(){ _save0(); questTick(); };
+function questCard(){
+  const xp = calcXp(), L = levelOf(xp), st = calcStreak();
+  return h('div',{class:'card quest'},
+    h('div',{class:'qbadge'}, String(L.lv)),
+    h('div',{class:'mid'}, h('b',null,'Level ' + L.lv), h('div',{class:'muted'}, L.into + ' dari ' + L.need + ' XP ke level berikutnya (total ' + xp + ' XP)'),
+      h('div',{class:'bar',style:'margin-top:8px'}, h('i',{style:'width:' + Math.round(L.into*100/L.need) + '%'}))),
+    h('div',{class:'qstreak'}, h('span',{class:'fl'},'\u{1F525}'), ' ' + st + ' hari'));
+}
+
+
+function themeNow(){const t=document.documentElement.getAttribute('data-theme');return t||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')}
+function themeDraw(){const b=document.getElementById('themebtn');if(b){const d=themeNow()==='dark';b.textContent=d?'\u2600 Mode terang':'\u263E Mode gelap';b.setAttribute('aria-label',d?'Ganti ke mode terang':'Ganti ke mode gelap')}}
+function themeToggle(){const n=themeNow()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('tema',n)}catch(e){}themeDraw()}
+document.getElementById('themebtn').addEventListener('click',themeToggle);themeDraw();
+
 (async function boot(){
   loadState();
+  await syncSrv();
   /* Progres awal (opsional): dipakai hanya bila browser ini belum punya progres sama sekali. */
   await loadScript('bank/seed-progress.js');
   if (window.SEED_STATE && !Object.keys(S.mcq).length && !Object.keys(S.cards).length && !Object.keys(S.essay).length && !Object.keys(S.materi).length){
@@ -1402,6 +1626,7 @@ function loadScript(src){
   }
   buildCourses();
   render();
+  questTick();
   setInterval(timerTick, 250);
 })();
 </script>
