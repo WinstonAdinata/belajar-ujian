@@ -403,6 +403,7 @@ function bumpDay(){ const k = dkey(); S.days[k] = (S.days[k]||0) + 1; }
 const COURSE_META = []; function registerCourses(a){ COURSE_META.push(...a); }
 const MATERI = []; function registerMateri(a){ MATERI.push(...a); }
 const TASKS = []; function registerTasks(a){ TASKS.push(...a); }
+const CATATAN = []; function registerCatatan(a){ CATATAN.push(...a); }
 const ALL_KEY = '*', ALL_LABEL = 'Semua mata kuliah';
 let COURSES = {}, ALL = null;
 function newCourse(name, meta){ return { name, key:name, meta:meta||null, mcq:[], cards:[], essay:[], materi:[] }; }
@@ -518,6 +519,7 @@ const ROUTES = [
   ['', 'Dashboard', viewDashboard],
   ['tasks', 'Tugas', viewTasks],
   ['materi', 'Materi', viewMateri],
+  ['catatan', 'Catatan Winston', viewCatatan],
   ['quiz', 'Quiz', viewQuiz],
   ['review', 'Review Quiz', viewReview],
   ['exam', 'Simulasi Ujian', viewExam],
@@ -1248,6 +1250,20 @@ function viewMateri(){
   mount(root);
 }
 
+
+/* ================= Catatan Winston ================= */
+function viewCatatan(){
+  const root = h('div');
+  root.append(h('h1',null,'Catatan Winston'), h('p',{class:'sub'},'Inti catatan tulisan tangan Trade in Asia (persiapan Mid Test), ditranskripsi utuh per topik. Bagian bertanda "tulisan kurang jelas" perlu dicocokkan dengan scan di bawah tiap topik.'));
+  if (!CATATAN.length){ root.append(h('div',{class:'card'},'Catatan belum termuat.')); mount(root); return; }
+  root.append(h('div',{class:'row',style:'margin-bottom:14px'}, ...CATATAN.map(c =>
+    h('button',{class:'btn small',onclick:()=>{ const el = document.getElementById('cat-'+c.id); if (el) el.scrollIntoView({behavior:'smooth',block:'start'}); }}, c.title))));
+  for (const c of CATATAN){
+    root.append(h('div',{class:'card',id:'cat-'+c.id,style:'margin-bottom:16px;overflow-x:auto'}, h('h2',{style:'margin-top:0'},c.title), mdToDom(c.md)));
+  }
+  mount(root);
+}
+
 /* ================= Pengaturan ================= */
 function viewSettings(){
   const root = h('div');
@@ -1621,6 +1637,7 @@ document.getElementById('themebtn').addEventListener('click',themeToggle);themeD
     for (const f of window.BANK_FILES) await loadScript('bank/' + f);
   }
   await loadScript('bank/tasks.js');
+  await loadScript('bank/catatan.js');
   if (ok && Array.isArray(window.MATERI_FILES)){
     for (const f of window.MATERI_FILES) await loadScript('bank/' + f);
   }
