@@ -354,6 +354,10 @@ nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink)
 .cat-focus .md p,.cat-focus .md li,.cat-focus .md td,.cat-focus .md th,.cat-focus .md h2,.cat-focus .md h3{color:color-mix(in srgb,var(--ink) 30%,transparent)}
 .cat-focus .md .explain,.cat-focus .md .explain *{color:var(--ink)}
 .cat-focus .md mark.hl{color:var(--ink)}
+
+.cat-gh{display:flex;justify-content:space-between;align-items:center;width:100%;font:inherit;font-size:.74rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:0;border-radius:10px;padding:8px 10px;margin:8px 0 4px;cursor:pointer}
+.cat-grp:first-of-type .cat-gh{margin-top:4px}
+.cat-item{font-size:.84rem;padding:6px 8px}
 @media (max-width:820px){.cat-wrap{grid-template-columns:1fr}.cat-side{display:none}.cat-sel{display:block}}
 @media (max-width:640px){.hxp{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -1297,8 +1301,8 @@ function viewMateri(){
 
 
 /* ================= Catatan Winston ================= */
-let catSel = null, catFocus = false;
-const catShort = t => t.replace(/^Pelengkap PPT:\s*/,'');
+let catSel = null, catFocus = false, catOpen = {hand:true, ppt:false};
+const catShort = t => { const x = t.replace(/^Pelengkap PPT:\s*/,''); return x.charAt(0).toUpperCase() + x.slice(1); };
 const catRead = id => !!S.materi['catatan-' + id];
 function viewCatatan(){
   const root = h('div');
@@ -1310,11 +1314,16 @@ function viewCatatan(){
   const hand = CATATAN.filter(c => !c.id.startsWith('p')), ppt = CATATAN.filter(c => c.id.startsWith('p'));
   const doneN = CATATAN.filter(c => catRead(c.id)).length;
   const item = c => h('button',{class:'cat-item' + (c.id===catSel?' on':'') + (catRead(c.id)?' done':''),type:'button',onclick:()=>go(c.id)}, h('span',{class:'ck'},'\u2713'), catShort(c.title));
+  const grpOf = id => id.startsWith('p') ? 'ppt' : 'hand';
+  if (!catOpen[grpOf(catSel)]) catOpen[grpOf(catSel)] = true;
+  const grp = (key, label, list) => h('div',{class:'cat-grp'},
+    h('button',{class:'cat-gh',type:'button','aria-expanded':String(!!catOpen[key]),onclick:()=>{ catOpen[key] = !catOpen[key]; render(); }},
+      h('span',null,label + ' (' + list.filter(c=>catRead(c.id)).length + '/' + list.length + ')'), h('span',null, catOpen[key] ? '\u25BE' : '\u25B8')),
+    ...(catOpen[key] ? list.map(item) : []));
   const side = h('aside',{class:'cat-side','aria-label':'Daftar isi catatan'},
     h('div',{class:'muted',style:'font-size:.8rem'}, doneN + ' dari ' + CATATAN.length + ' sudah dibaca'),
     h('div',{class:'bar'}, h('i',{style:'width:' + Math.round(doneN*100/CATATAN.length) + '%'})),
-    h('h4',null,'Tulisan tangan'), ...hand.map(item),
-    h('h4',null,'Pelengkap PPT'), ...ppt.map(item));
+    grp('hand','Tulisan tangan',hand), grp('ppt','Pelengkap PPT',ppt));
   const sel = h('select',{class:'cat-sel','aria-label':'Pilih topik',onchange:e=>go(e.target.value)},
     ...CATATAN.map(c => h('option',{value:c.id,selected:c.id===catSel}, (catRead(c.id)?'\u2713 ':'') + catShort(c.title))));
   const doneBtn = h('button',{class:'btn small' + (catRead(cur.id)?'':' primary'),type:'button',onclick:()=>{
@@ -1336,6 +1345,7 @@ function viewCatatan(){
     if (e.key === 'ArrowRight' && idx<CATATAN.length-1) go(CATATAN[idx+1].id);
   };
   mount(root);
+  const on = document.querySelector('.cat-item.on'); if (on) on.scrollIntoView({block:'nearest'});
 }
 
 /* ================= Pengaturan ================= */
