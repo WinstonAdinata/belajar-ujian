@@ -311,6 +311,50 @@ nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink)
 @keyframes qShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
 @keyframes qPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 @keyframes qFlame{0%,100%{transform:rotate(-4deg) scale(1)}50%{transform:rotate(4deg) scale(1.14)}}
+
+/* Asisten: tombol Tanya Claude */
+#askfab{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);border:0;border-bottom:4px solid color-mix(in srgb,var(--accent) 60%,#000);border-radius:999px;padding:11px 18px;font:inherit;font-weight:700;cursor:pointer;box-shadow:var(--shadow);transition:transform .15s}
+#askfab:hover{transform:translateY(-2px)}
+#askfab:active{transform:translateY(2px);border-bottom-width:1px}
+#askpanel{position:fixed;right:18px;bottom:76px;z-index:41;width:min(360px,calc(100vw - 36px));background:var(--surface);border:2px solid var(--line);border-bottom-width:4px;border-radius:18px;padding:14px;box-shadow:var(--shadow);animation:qIn .25s cubic-bezier(.2,.8,.2,1) both}
+#askpanel h3{margin:0 0 4px}
+#askpanel .ctx{font-size:.8rem;color:var(--muted);margin:0 0 10px;max-height:3.2em;overflow:hidden}
+#askpanel .presets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+#askpanel .presets .btn{font-size:.82rem;padding:6px 10px}
+#askpanel .free{display:flex;gap:6px}
+#askpanel .free input{flex:1;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+#askpanel .note{font-size:.75rem;color:var(--muted);margin:8px 0 0}
+@media print{#askfab,#askpanel{display:none}}
+
+/* Catatan Winston: sidebar, sorotan penting */
+.cat-wrap{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
+.cat-side{position:sticky;top:78px;max-height:calc(100vh - 96px);overflow:auto;padding:12px;border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;background:var(--surface)}
+.cat-side h4{margin:12px 0 6px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.cat-side h4:first-of-type{margin-top:6px}
+.cat-side .bar{margin:4px 0 6px}
+.cat-item{display:flex;gap:8px;align-items:center;width:100%;text-align:left;font:inherit;font-size:.88rem;background:none;border:0;border-radius:10px;padding:7px 9px;color:var(--ink);cursor:pointer;transition:background .12s,transform .12s}
+.cat-item:hover{background:var(--accent-soft);transform:translateX(2px)}
+.cat-item.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.cat-item .ck{flex:0 0 18px;height:18px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-size:.7rem;color:transparent}
+.cat-item.done .ck{background:var(--ok);border-color:var(--ok);color:#fff}
+.cat-item.on .ck{border-color:var(--accent-ink)}
+.cat-main .tool{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.cat-main .badge{font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.cat-sel{display:none;width:100%;margin-bottom:12px}
+.cat-nav{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.md mark.hl{background:color-mix(in srgb,var(--accent2) 45%,transparent);color:inherit;padding:0 3px;border-radius:4px;font-weight:600}
+.explain.k-ingat{background:color-mix(in srgb,var(--accent2) 18%,var(--surface));border:2px solid var(--accent2);border-left-width:6px}
+.explain.k-rumus{background:var(--accent-soft);border:2px solid var(--accent);border-left-width:6px}
+.explain.k-jebakan{background:var(--bad-soft);border:2px solid var(--bad);border-left-width:6px}
+.explain.k-catatan{background:var(--surface2);border:2px dashed var(--line);border-left:6px solid var(--muted)}
+.explain.k-ingat>strong,.explain.k-rumus>strong,.explain.k-jebakan>strong,.explain.k-catatan>strong{display:block;margin-bottom:4px}
+.explain.k-ingat>strong::before{content:"\2605";margin-right:.4em;color:var(--warn)}
+.explain.k-jebakan>strong::before{content:"\26A0";margin-right:.4em;color:var(--bad)}
+.explain.k-rumus>strong::before{content:"\03A3";margin-right:.4em;color:var(--accent)}
+.cat-focus .md p,.cat-focus .md li,.cat-focus .md td,.cat-focus .md th,.cat-focus .md h2,.cat-focus .md h3{color:color-mix(in srgb,var(--ink) 30%,transparent)}
+.cat-focus .md .explain,.cat-focus .md .explain *{color:var(--ink)}
+.cat-focus .md mark.hl{color:var(--ink)}
+@media (max-width:820px){.cat-wrap{grid-template-columns:1fr}.cat-side{display:none}.cat-sel{display:block}}
 @media (max-width:640px){.hxp{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -1086,12 +1130,13 @@ function viewEssay(){
 
 /* ================= Materi (baca ringkasan) ================= */
 function inl(text){
-  const out = []; const re = /(\*\*[^*]+\*\*|`[^`]+`|\[\[[^\]]+\]\]|\[[^\]]+\]\([^)\s]+\)|\*[^*\s][^*]*\*)/g;
+  const out = []; const re = /(==[^=]+==|\*\*[^*]+\*\*|`[^`]+`|\[\[[^\]]+\]\]|\[[^\]]+\]\([^)\s]+\)|\*[^*\s][^*]*\*)/g;
   let last = 0, m;
   while ((m = re.exec(text))){
     if (m.index > last) out.push(text.slice(last, m.index));
     const t = m[0];
-    if (t.startsWith('**')) out.push(h('strong',null,inl(t.slice(2,-2))));
+    if (t.startsWith('==')) out.push(h('mark',{class:'hl'},inl(t.slice(2,-2))));
+    else if (t.startsWith('**')) out.push(h('strong',null,inl(t.slice(2,-2))));
     else if (t.startsWith('`')) out.push(h('code',null,t.slice(1,-1)));
     else if (t.startsWith('[[')){
       const parts = t.slice(2,-2).split('|'); const target = parts[0].trim(); const label = (parts[1]||parts[0]).trim();
@@ -1167,7 +1212,7 @@ function mdToDom(md){
       let title = null, cls = 'explain'; const cm = /^\[!(\w+)\][+-]?\s*(.*)$/.exec(buf[0] || '');
       if (cm){
         buf.shift(); title = cm[2] || cm[1];
-        if (cm[1] === 'warning') cls += ' bad'; else if (cm[1] === 'success' || cm[1] === 'tip') cls += ' ok';
+        if (cm[1] === 'warning') cls += ' bad'; else if (cm[1] === 'success' || cm[1] === 'tip') cls += ' ok'; else if (['ingat','jebakan','rumus','catatan'].includes(cm[1])) cls += ' k-' + cm[1];
       }
       root.append(h('div',{class:cls,style:'margin:10px 0'}, title ? h('strong',null,inl(title)) : null, mdToDom(buf.join('\n'))));
       continue;
@@ -1252,15 +1297,44 @@ function viewMateri(){
 
 
 /* ================= Catatan Winston ================= */
+let catSel = null, catFocus = false;
+const catShort = t => t.replace(/^Pelengkap PPT:\s*/,'');
+const catRead = id => !!S.materi['catatan-' + id];
 function viewCatatan(){
   const root = h('div');
-  root.append(h('h1',null,'Catatan Winston'), h('p',{class:'sub'},'Inti catatan tulisan tangan Trade in Asia (persiapan Mid Test), ditranskripsi utuh per topik. Bagian bertanda "tulisan kurang jelas" perlu dicocokkan dengan scan di bawah tiap topik.'));
+  root.append(h('h1',null,'Catatan Winston'), h('p',{class:'sub'},'Catatan tulisan tangan Trade in Asia (persiapan Mid Test) dan pelengkap dari PPT Sesi 1 sampai 6. Kotak kuning berisi yang penting diingat, merah untuk jebakan, biru untuk rumus dan daftar hafalan. Bagian bertanda "tulisan kurang jelas" perlu dicocokkan dengan scan.'));
   if (!CATATAN.length){ root.append(h('div',{class:'card'},'Catatan belum termuat.')); mount(root); return; }
-  root.append(h('div',{class:'row',style:'margin-bottom:14px'}, ...CATATAN.map(c =>
-    h('button',{class:'btn small',onclick:()=>{ const el = document.getElementById('cat-'+c.id); if (el) el.scrollIntoView({behavior:'smooth',block:'start'}); }}, c.title))));
-  for (const c of CATATAN){
-    root.append(h('div',{class:'card',id:'cat-'+c.id,style:'margin-bottom:16px;overflow-x:auto'}, h('h2',{style:'margin-top:0'},c.title), mdToDom(c.md)));
-  }
+  if (!catSel || !CATATAN.some(c => c.id === catSel)) catSel = CATATAN[0].id;
+  const idx = CATATAN.findIndex(c => c.id === catSel), cur = CATATAN[idx];
+  const go = id => { catSel = id; render(); };
+  const hand = CATATAN.filter(c => !c.id.startsWith('p')), ppt = CATATAN.filter(c => c.id.startsWith('p'));
+  const doneN = CATATAN.filter(c => catRead(c.id)).length;
+  const item = c => h('button',{class:'cat-item' + (c.id===catSel?' on':'') + (catRead(c.id)?' done':''),type:'button',onclick:()=>go(c.id)}, h('span',{class:'ck'},'\u2713'), catShort(c.title));
+  const side = h('aside',{class:'cat-side','aria-label':'Daftar isi catatan'},
+    h('div',{class:'muted',style:'font-size:.8rem'}, doneN + ' dari ' + CATATAN.length + ' sudah dibaca'),
+    h('div',{class:'bar'}, h('i',{style:'width:' + Math.round(doneN*100/CATATAN.length) + '%'})),
+    h('h4',null,'Tulisan tangan'), ...hand.map(item),
+    h('h4',null,'Pelengkap PPT'), ...ppt.map(item));
+  const sel = h('select',{class:'cat-sel','aria-label':'Pilih topik',onchange:e=>go(e.target.value)},
+    ...CATATAN.map(c => h('option',{value:c.id,selected:c.id===catSel}, (catRead(c.id)?'\u2713 ':'') + catShort(c.title))));
+  const doneBtn = h('button',{class:'btn small' + (catRead(cur.id)?'':' primary'),type:'button',onclick:()=>{
+    const k = 'catatan-' + cur.id; if (S.materi[k]) delete S.materi[k]; else { S.materi[k] = Date.now(); bumpDay(); }
+    save(); render(); }}, catRead(cur.id) ? 'Sudah dibaca (batalkan)' : 'Tandai sudah dibaca');
+  const focusBtn = h('button',{class:'btn small',type:'button','aria-pressed':String(catFocus),onclick:()=>{ catFocus = !catFocus; document.getElementById('catmain').classList.toggle('cat-focus', catFocus); focusBtn.textContent = catFocus ? 'Mode fokus: nyala' : 'Mode fokus penting'; focusBtn.setAttribute('aria-pressed', String(catFocus)); }}, catFocus ? 'Mode fokus: nyala' : 'Mode fokus penting');
+  const nav = h('div',{class:'cat-nav'},
+    idx>0 ? h('button',{class:'btn',type:'button',onclick:()=>go(CATATAN[idx-1].id)}, '\u2190 ' + catShort(CATATAN[idx-1].title)) : h('span'),
+    idx<CATATAN.length-1 ? h('button',{class:'btn primary',type:'button',onclick:()=>go(CATATAN[idx+1].id)}, catShort(CATATAN[idx+1].title) + ' \u2192') : h('span'));
+  const main = h('section',{class:'cat-main' + (catFocus?' cat-focus':''),id:'catmain'},
+    sel,
+    h('div',{class:'tool'}, h('span',{class:'badge'}, cur.id.startsWith('p') ? 'Pelengkap PPT' : 'Tulisan tangan'), h('span',{class:'sp'}), focusBtn, doneBtn),
+    h('div',{class:'card'}, h('h2',{style:'margin-top:0'}, catShort(cur.title)), mdToDom(cur.md)),
+    nav);
+  root.append(h('div',{class:'cat-wrap'}, side, main));
+  keyHandler = e => {
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test((e.target||{}).tagName)) return;
+    if (e.key === 'ArrowLeft' && idx>0) go(CATATAN[idx-1].id);
+    if (e.key === 'ArrowRight' && idx<CATATAN.length-1) go(CATATAN[idx+1].id);
+  };
   mount(root);
 }
 
@@ -1621,6 +1695,52 @@ function themeDraw(){const b=document.getElementById('themebtn');if(b){const d=t
 function themeToggle(){const n=themeNow()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('tema',n)}catch(e){}themeDraw()}
 document.getElementById('themebtn').addEventListener('click',themeToggle);themeDraw();
 
+/* ================= Asisten: Tanya Claude ================= */
+const ASK_PRESETS = [
+  ['Jelaskan lebih simpel','Jelaskan bagian ini dengan bahasa yang lebih simpel, pakai analogi sehari-hari.'],
+  ['Kasih contoh nyata','Kasih 2 contoh nyata (kalau bisa dari bisnis kuliner atau perusahaan di Indonesia) supaya gua gampang paham.'],
+  ['Kenapa jawaban ini?','Jelaskan kenapa jawaban yang benar itu benar dan kenapa pilihan lainnya salah.'],
+  ['Bikin soal latihan','Bikin 3 soal latihan mirip ini (pilihan ganda, beserta kunci dan pembahasan singkat).'],
+  ['Ringkas jadi hafalan','Ringkas jadi poin-poin yang gampang dihafal, plus singkatan atau jembatan keledai kalau bisa.'],
+  ['Tes gua','Tanya gua satu per satu tentang materi ini untuk ngetes pemahaman gua, tunggu jawaban gua sebelum lanjut.']
+];
+function askContext(sel){
+  const route = ROUTES.find(x => x[0] === curRoute()) || ROUTES[0];
+  let txt = sel || (document.getElementById('app').innerText || '').replace(/\n{3,}/g,'\n\n').trim();
+  if (txt.length > 2800) txt = txt.slice(0,2800) + '\n[...dipotong]';
+  return {route: route[1], txt, fromSel: !!sel};
+}
+function askOpen(extra, ctx){
+  const head = 'Gua lagi belajar buat ujian di aplikasi belajar gua (halaman: ' + ctx.route + '). Bantu gua pakai bahasa Indonesia santai.';
+  const body = (ctx.fromSel ? 'Bagian yang gua pilih:\n' : 'Isi layar gua sekarang:\n') + '"""\n' + ctx.txt + '\n"""';
+  const prompt = head + '\n\n' + body + '\n\nPermintaan gua: ' + extra;
+  try { navigator.clipboard.writeText(prompt); } catch(e){}
+  window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank', 'noopener');
+}
+function askInit(){
+  if (document.getElementById('askfab')) return;
+  let sel = '', panel = null;
+  const fab = h('button',{id:'askfab',type:'button','aria-label':'Tanya Claude'}, '✨ Tanya Claude');
+  fab.addEventListener('pointerdown', () => { sel = (window.getSelection() ? window.getSelection().toString() : '').trim().slice(0,2800); }, true);
+  const close = () => { if (panel){ panel.remove(); panel = null; } };
+  fab.addEventListener('click', () => {
+    if (panel){ close(); return; }
+    const ctx = askContext(sel);
+    const input = h('input',{type:'text',placeholder:'Atau tulis pertanyaan lu sendiri...','aria-label':'Pertanyaan'});
+    const send = () => { const q = input.value.trim(); if (!q){ input.focus(); return; } askOpen(q, ctx); close(); };
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); if (e.key === 'Escape') close(); });
+    panel = h('div',{id:'askpanel',role:'dialog','aria-label':'Tanya Claude'},
+      h('h3',null,'Tanya Claude'),
+      h('p',{class:'ctx'}, ctx.fromSel ? 'Konteks: teks yang lu pilih' : 'Konteks: isi halaman ' + ctx.route + ' yang lagi lu lihat'),
+      h('div',{class:'presets'}, ...ASK_PRESETS.map(([l,q]) => h('button',{class:'btn small',type:'button',onclick:()=>{ askOpen(q, ctx); close(); }}, l))),
+      h('div',{class:'free'}, input, h('button',{class:'btn primary small',type:'button',onclick:send},'Kirim')),
+      h('p',{class:'note'}, 'Terbuka di tab baru claude.ai dan teksnya juga disalin. Tip: blok dulu teks yang mau ditanyakan, baru klik tombol ini.'));
+    document.body.append(panel); input.focus();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.body.append(fab);
+}
+
 (async function boot(){
   loadState();
   await syncSrv();
@@ -1643,6 +1763,7 @@ document.getElementById('themebtn').addEventListener('click',themeToggle);themeD
   }
   buildCourses();
   render();
+  askInit();
   questTick();
   setInterval(timerTick, 250);
 })();
