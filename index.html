@@ -358,6 +358,66 @@ nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink)
 .cat-gh{display:flex;justify-content:space-between;align-items:center;width:100%;font:inherit;font-size:.74rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:0;border-radius:10px;padding:8px 10px;margin:8px 0 4px;cursor:pointer}
 .cat-grp:first-of-type .cat-gh{margin-top:4px}
 .cat-item{font-size:.84rem;padding:6px 8px}
+
+/* Catatan: penanda sumber */
+:root{--src-hand:#7c4dff;--src-hand-bg:#efe9ff;--src-ppt:#0e9f8e;--src-ppt-bg:#dcf5f1}
+:root[data-theme="dark"]{--src-hand:#b79cff;--src-hand-bg:#2d2750;--src-ppt:#4fd1c0;--src-ppt-bg:#173a38}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--src-hand:#b79cff;--src-hand-bg:#2d2750;--src-ppt:#4fd1c0;--src-ppt-bg:#173a38}}
+.src-chip{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.src-chip.hand{background:var(--src-hand-bg);color:var(--src-hand)}
+.src-chip.ppt{background:var(--src-ppt-bg);color:var(--src-ppt)}
+.cat-legend{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.cat-jump{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.cat-jb{font:inherit;font-size:.78rem;border-radius:99px;padding:4px 10px;cursor:pointer;border:2px solid var(--line);background:var(--surface);color:var(--ink);max-width:100%;text-align:left}
+.cat-jb.hand{border-color:var(--src-hand)}.cat-jb.ppt{border-color:var(--src-ppt)}
+.cat-jb:hover{background:var(--accent-soft)}
+.cat-part{margin-bottom:16px;overflow-x:auto;border-left-width:8px}
+.cat-part.src-hand{border-left-color:var(--src-hand)}
+.cat-part.src-ppt{border-left-color:var(--src-ppt)}
+.cat-src{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 8px}
+.cat-part .md h2{margin-top:18px}
+
+/* Persiapan mid: kartu interaktif */
+.midv{margin-top:14px}
+.mtool{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.mcard{border:2px solid var(--line);border-bottom-width:4px;border-radius:16px;background:var(--surface);margin:0 0 12px;overflow:hidden}
+.mcard>summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;font-weight:700;font-size:1.02rem}
+.mcard>summary::-webkit-details-marker{display:none}
+.mcard>summary::after{content:"\25BE";margin-left:auto;color:var(--muted);transition:transform .2s}
+.mcard[open]>summary::after{transform:rotate(180deg)}
+.mcard>summary:hover{background:var(--accent-soft)}
+.mbody{padding:0 16px 16px}
+.mcard[open] .mbody{animation:qIn .3s cubic-bezier(.2,.8,.2,1) both}
+.msn{width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-size:.9rem;flex:0 0 30px}
+.mst{flex:1 1 200px}
+.msess.mdone .msn{background:var(--ok)}
+.msess.mdone .msn::before{content:"\2713"}
+.msess.mdone .msn{font-size:0}.msess.mdone .msn::before{font-size:.95rem}
+.mc-intro{border-color:var(--accent)}
+.mh{margin:16px 0 8px;font-size:.95rem;color:var(--accent)}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.mflip{font:inherit;color:var(--ink);background:none;border:0;padding:0;perspective:900px;cursor:pointer;min-height:118px;text-align:left}
+.mf-in{position:relative;display:block;width:100%;height:100%;min-height:118px;transition:transform .45s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.mflip.on .mf-in{transform:rotateY(180deg)}
+.mf-front,.mf-back{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px;padding:12px 14px;border-radius:14px;border:2px solid var(--line);border-bottom-width:4px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:auto;font-size:.9rem;line-height:1.45}
+.mf-front{background:var(--surface2)}
+.mf-back{background:var(--ok-soft);border-color:var(--ok);transform:rotateY(180deg)}
+.mf-tag{font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mflip:hover .mf-front{border-color:var(--accent)}
+.mchecks{background:var(--surface2);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.mcheck{padding:8px 0;border-bottom:1px dashed var(--line)}
+.mcheck:last-child{border-bottom:0}
+.mcheck input{font:inherit;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:6px 10px;width:170px;margin-top:6px}
+.mres{font-weight:700;font-size:.88rem}.mres.ok{color:var(--ok)}.mres.bad{color:var(--bad)}.mres.warn{color:var(--warn)}
+.mlat li{margin:0 0 14px}
+.mlat .btn{margin-top:6px}
+.mq-ans{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--ok-soft);border-left:4px solid var(--ok)}
+.mq-bg{z-index:70}
+.mq{max-width:560px;width:calc(100vw - 32px)}
+.mq-q{font-size:1.15rem;font-weight:700;line-height:1.45}
+.cat-focus .md strong,.cat-focus .md mark.hl{color:var(--ink)}
+.midv.cat-focus .mcard>summary{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){.mf-in{transition:none}}
 @media (max-width:820px){.cat-wrap{grid-template-columns:1fr}.cat-side{display:none}.cat-sel{display:block}}
 @media (max-width:640px){.hxp{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -1290,7 +1350,7 @@ function viewMateri(){
           const sp = h('select',{onchange:e=>{v.playbackRate=+e.target.value;}},...[1,1.25,1.5,1.75,2].map(x=>h('option',{value:x},x+'x')));
           const box = h('div',null,h('div',{class:'row',style:'margin-top:12px'},h('span',{class:'muted'},'Video penjelasan (suara Indonesia, slide per sesi)'),h('span',{class:'sp'}),h('span',{class:'muted'},'Kecepatan'),sp),v);
           v.onerror = ()=>box.remove(); return box; })() : null,
-        mdToDom(m.markdown),
+        (m.view==='midcards' && m.mid) ? renderMidCards(m) : mdToDom(m.markdown),
         h('hr'),
         h('label',{class:'topic'},done,h('span',null,'Tandai sudah dipelajari'))));
     window.scrollTo(0,0);
@@ -1301,42 +1361,49 @@ function viewMateri(){
 
 
 /* ================= Catatan Winston ================= */
-let catSel = null, catFocus = false, catOpen = {hand:true, ppt:false};
-const catShort = t => { const x = t.replace(/^Pelengkap PPT:\s*/,''); return x.charAt(0).toUpperCase() + x.slice(1); };
+let catSel = null, catFocus = false, catOpen = {s:true, x:true};
 const catRead = id => !!S.materi['catatan-' + id];
+const catGrp = c => c.group === 'x' ? 'x' : 's';
 function viewCatatan(){
   const root = h('div');
-  root.append(h('h1',null,'Catatan Winston'), h('p',{class:'sub'},'Catatan tulisan tangan Trade in Asia (persiapan Mid Test) dan pelengkap dari PPT Sesi 1 sampai 6. Kotak kuning berisi yang penting diingat, merah untuk jebakan, biru untuk rumus dan daftar hafalan. Bagian bertanda "tulisan kurang jelas" perlu dicocokkan dengan scan.'));
+  root.append(h('h1',null,'Catatan Winston'), h('p',{class:'sub'},'Catatan Trade in Asia diurutkan per sesi (Sesi 1 sampai 7). Tulisan tangan lu dan tambahan dari PPT digabung dalam satu sesi, ditandai warna: ungu untuk tulisan tangan lu (isinya tidak diubah), hijau untuk dari PPT. Kotak kuning, merah, dan biru adalah sorotan yang gua tambahkan, bukan bagian catatan lu.'));
   if (!CATATAN.length){ root.append(h('div',{class:'card'},'Catatan belum termuat.')); mount(root); return; }
   if (!catSel || !CATATAN.some(c => c.id === catSel)) catSel = CATATAN[0].id;
   const idx = CATATAN.findIndex(c => c.id === catSel), cur = CATATAN[idx];
   const go = id => { catSel = id; render(); };
-  const hand = CATATAN.filter(c => !c.id.startsWith('p')), ppt = CATATAN.filter(c => c.id.startsWith('p'));
-  const doneN = CATATAN.filter(c => catRead(c.id)).length;
-  const item = c => h('button',{class:'cat-item' + (c.id===catSel?' on':'') + (catRead(c.id)?' done':''),type:'button',onclick:()=>go(c.id)}, h('span',{class:'ck'},'\u2713'), catShort(c.title));
-  const grpOf = id => id.startsWith('p') ? 'ppt' : 'hand';
-  if (!catOpen[grpOf(catSel)]) catOpen[grpOf(catSel)] = true;
+  const short = t => t.replace(/^(Sesi \d+):\s*/,'$1 · ');
+  const item = c => h('button',{class:'cat-item' + (c.id===catSel?' on':'') + (catRead(c.id)?' done':''),type:'button',onclick:()=>go(c.id)}, h('span',{class:'ck'},'✓'), short(c.title));
+  const sess = CATATAN.filter(c => catGrp(c)==='s'), oth = CATATAN.filter(c => catGrp(c)==='x');
+  if (!catOpen[catGrp(cur)]) catOpen[catGrp(cur)] = true;
   const grp = (key, label, list) => h('div',{class:'cat-grp'},
     h('button',{class:'cat-gh',type:'button','aria-expanded':String(!!catOpen[key]),onclick:()=>{ catOpen[key] = !catOpen[key]; render(); }},
-      h('span',null,label + ' (' + list.filter(c=>catRead(c.id)).length + '/' + list.length + ')'), h('span',null, catOpen[key] ? '\u25BE' : '\u25B8')),
+      h('span',null,label + ' (' + list.filter(c=>catRead(c.id)).length + '/' + list.length + ')'), h('span',null, catOpen[key] ? '▾' : '▸')),
     ...(catOpen[key] ? list.map(item) : []));
+  const doneN = CATATAN.filter(c => catRead(c.id)).length;
   const side = h('aside',{class:'cat-side','aria-label':'Daftar isi catatan'},
     h('div',{class:'muted',style:'font-size:.8rem'}, doneN + ' dari ' + CATATAN.length + ' sudah dibaca'),
     h('div',{class:'bar'}, h('i',{style:'width:' + Math.round(doneN*100/CATATAN.length) + '%'})),
-    grp('hand','Tulisan tangan',hand), grp('ppt','Pelengkap PPT',ppt));
-  const sel = h('select',{class:'cat-sel','aria-label':'Pilih topik',onchange:e=>go(e.target.value)},
-    ...CATATAN.map(c => h('option',{value:c.id,selected:c.id===catSel}, (catRead(c.id)?'\u2713 ':'') + catShort(c.title))));
+    grp('s','Per sesi',sess), grp('x','Lainnya',oth));
+  const sel = h('select',{class:'cat-sel','aria-label':'Pilih sesi',onchange:e=>go(e.target.value)},
+    ...CATATAN.map(c => h('option',{value:c.id,selected:c.id===catSel}, (catRead(c.id)?'✓ ':'') + short(c.title))));
   const doneBtn = h('button',{class:'btn small' + (catRead(cur.id)?'':' primary'),type:'button',onclick:()=>{
     const k = 'catatan-' + cur.id; if (S.materi[k]) delete S.materi[k]; else { S.materi[k] = Date.now(); bumpDay(); }
     save(); render(); }}, catRead(cur.id) ? 'Sudah dibaca (batalkan)' : 'Tandai sudah dibaca');
   const focusBtn = h('button',{class:'btn small',type:'button','aria-pressed':String(catFocus),onclick:()=>{ catFocus = !catFocus; document.getElementById('catmain').classList.toggle('cat-focus', catFocus); focusBtn.textContent = catFocus ? 'Mode fokus: nyala' : 'Mode fokus penting'; focusBtn.setAttribute('aria-pressed', String(catFocus)); }}, catFocus ? 'Mode fokus: nyala' : 'Mode fokus penting');
   const nav = h('div',{class:'cat-nav'},
-    idx>0 ? h('button',{class:'btn',type:'button',onclick:()=>go(CATATAN[idx-1].id)}, '\u2190 ' + catShort(CATATAN[idx-1].title)) : h('span'),
-    idx<CATATAN.length-1 ? h('button',{class:'btn primary',type:'button',onclick:()=>go(CATATAN[idx+1].id)}, catShort(CATATAN[idx+1].title) + ' \u2192') : h('span'));
+    idx>0 ? h('button',{class:'btn',type:'button',onclick:()=>go(CATATAN[idx-1].id)}, '← ' + short(CATATAN[idx-1].title)) : h('span'),
+    idx<CATATAN.length-1 ? h('button',{class:'btn primary',type:'button',onclick:()=>go(CATATAN[idx+1].id)}, short(CATATAN[idx+1].title) + ' →') : h('span'));
+  const SRC = {hand:['✍ Tulisan tangan','Tulisan tangan lu'], ppt:['📄 Dari PPT','Tambahan dari PPT']};
+  const nHand = cur.parts.filter(p=>p.src==='hand').length, nPpt = cur.parts.length - nHand;
+  const jump = n => { const el = document.getElementById('cat-part-' + n); if (el) el.scrollIntoView({behavior:'smooth',block:'start'}); };
   const main = h('section',{class:'cat-main' + (catFocus?' cat-focus':''),id:'catmain'},
     sel,
-    h('div',{class:'tool'}, h('span',{class:'badge'}, cur.id.startsWith('p') ? 'Pelengkap PPT' : 'Tulisan tangan'), h('span',{class:'sp'}), focusBtn, doneBtn),
-    h('div',{class:'card'}, h('h2',{style:'margin-top:0'}, catShort(cur.title)), mdToDom(cur.md)),
+    h('div',{class:'tool'}, h('h2',{style:'margin:0;flex:1 1 220px'}, cur.title), focusBtn, doneBtn),
+    h('div',{class:'cat-legend'}, h('span',{class:'src-chip hand'}, SRC.hand[0] + ' (' + nHand + ')'), h('span',{class:'src-chip ppt'}, SRC.ppt[0] + ' (' + nPpt + ')')),
+    h('div',{class:'cat-jump'}, ...cur.parts.map((pt,n) => h('button',{class:'cat-jb ' + pt.src,type:'button',onclick:()=>jump(n)}, SRC[pt.src][0].split(' ')[0] + ' ' + pt.title.replace(/\s*\(label di catatan.*\)$/,'')))),
+    ...cur.parts.map((pt,n) => h('div',{class:'card cat-part src-' + pt.src,id:'cat-part-' + n},
+      h('div',{class:'cat-src'}, h('span',{class:'src-chip ' + pt.src}, SRC[pt.src][0]), h('strong',null,pt.title)),
+      mdToDom(pt.md))),
     nav);
   root.append(h('div',{class:'cat-wrap'}, side, main));
   keyHandler = e => {
@@ -1749,6 +1816,133 @@ function askInit(){
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
   document.body.append(fab);
+}
+
+/* ================= Tampilan kartu interaktif (Persiapan Mid Test) ================= */
+let midFocus = false;
+function midNum(t){
+  let x = String(t||'').replace(/[^\d.,-]/g,'');
+  if (x.includes(',') && x.includes('.')) x = x.replace(/\./g,'').replace(',','.');
+  else if (x.includes(',')) x = x.replace(',','.');
+  else if (/^\d{1,3}(\.\d{3})+$/.test(x)) x = x.replace(/\./g,'');
+  return parseFloat(x);
+}
+function midFlip(front, back, cls){
+  const card = h('button',{class:'mflip ' + (cls||''),type:'button','aria-label':'Balik kartu'},
+    h('span',{class:'mf-in'}, h('span',{class:'mf-front'}, h('span',{class:'mf-tag'},'Tebak dulu'), inl(front)), h('span',{class:'mf-back'}, h('span',{class:'mf-tag'},'Jawaban'), inl(back))));
+  card.onclick = () => card.classList.toggle('on');
+  return card;
+}
+function midDeck(m){
+  const d = m.mid, pool = [];
+  for (const se of d.sessions) for (const c of se.quick) pool.push({tag:'Sesi '+se.n, q:c.q, a:c.a});
+  for (const k of d.kontras) pool.push({tag:'Kontras', q:'Apa beda ' + k.a + ' dan ' + k.b + '?', a:k.key});
+  for (const k of d.akronim) pool.push({tag:'Akronim', q:'Kepanjangan atau isi: ' + k.front + '?', a:k.back});
+  for (const k of d.latihan) pool.push({tag:'Latihan', q:k.q, a:k.a});
+  return pool;
+}
+function midQuiz(m){
+  let queue = shuffle(midDeck(m)), total = queue.length, right = 0, done = 0, wrongs = [], retried = new Set();
+  const bg = h('div',{class:'modal-bg mq-bg',role:'dialog','aria-modal':'true'});
+  const close = () => { bg.remove(); document.removeEventListener('keydown', key); };
+  const key = e => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', key);
+  function show(){
+    if (!queue.length){
+      bg.replaceChildren(h('div',{class:'modal mq'},
+        h('h2',{style:'margin-top:0'},'Selesai'),
+        h('p',null,'Benar di percobaan pertama: ' + right + ' dari ' + total + ' (' + pct(right,total) + '%).'),
+        wrongs.length ? h('div',null,h('p',{class:'muted'},'Yang perlu diulang:'),h('ul',null,...wrongs.map(w=>h('li',null,inl(w.q))))) : h('p',null,'Semua benar. Mantap.'),
+        h('div',{class:'row',style:'justify-content:flex-end'},
+          wrongs.length ? h('button',{class:'btn',onclick:()=>{ queue = shuffle(wrongs.slice()); total = queue.length; right = 0; done = 0; wrongs = []; retried = new Set(); show(); }},'Ulang yang salah') : null,
+          h('button',{class:'btn primary',onclick:close},'Tutup'))));
+      return;
+    }
+    const c = queue[0]; let flipped = false;
+    const ans = h('div',{class:'mq-ans',hidden:true}, inl(c.a));
+    const actions = h('div',{class:'row',style:'justify-content:flex-end;margin-top:14px'});
+    const flipBtn = h('button',{class:'btn primary',onclick:()=>{ flipped = true; ans.hidden = false; flipBtn.remove();
+      actions.append(
+        h('button',{class:'btn',onclick:()=>{ queue.shift(); if (!retried.has(c)){ wrongs.push(c); retried.add(c); queue.push(c); } done++; show(); }},'Gua salah'),
+        h('button',{class:'btn primary',onclick:()=>{ queue.shift(); if (!retried.has(c)) right++; done++; S.materi['pdbmid-quiz'] = Date.now(); bumpDay(); save(); show(); }},'Gua benar')); }},'Balik kartu');
+    actions.append(flipBtn);
+    bg.replaceChildren(h('div',{class:'modal mq'},
+      h('div',{class:'row'},h('span',{class:'chip'},c.tag),h('span',{class:'sp'}),h('span',{class:'muted'}, Math.min(done+1,total) + ' / ' + total),
+        h('button',{class:'btn small',onclick:close},'Tutup')),
+      h('div',{class:'bar',style:'margin:10px 0 14px'},h('i',{style:'width:' + pct(done,total) + '%'})),
+      h('div',{class:'mq-q'}, inl(c.q)), ans, actions));
+  }
+  document.body.append(bg); show();
+}
+function renderMidCards(m){
+  const d = m.mid, wrap = h('div',{class:'midv' + (midFocus?' cat-focus':'')});
+  const key = n => 'pdbmid-s' + n;
+  const masteredN = () => d.sessions.filter(se => S.materi[key(se.n)]).length;
+  const prog = h('span',{class:'muted'});
+  const bar = h('i',{style:'width:0%'});
+  const upd = () => { prog.textContent = masteredN() + ' dari ' + d.sessions.length + ' sesi sudah paham'; bar.style.width = pct(masteredN(), d.sessions.length) + '%'; };
+  const focusBtn = h('button',{class:'btn small',type:'button'}, midFocus ? 'Mode fokus: nyala' : 'Mode fokus');
+  focusBtn.onclick = () => { midFocus = !midFocus; wrap.classList.toggle('cat-focus', midFocus); focusBtn.textContent = midFocus ? 'Mode fokus: nyala' : 'Mode fokus'; };
+  const sec = (title, body, open, extraCls) => {
+    const det = h('details',{class:'mcard ' + (extraCls||''), open:!!open});
+    det.append(h('summary',null,title), h('div',{class:'mbody'}, ...[].concat(body)));
+    return det;
+  };
+  wrap.append(
+    h('div',{class:'mtool'},
+      h('button',{class:'btn primary',type:'button',onclick:()=>midQuiz(m)},'\u{1F3B2} Uji diri (acak semua)'),
+      focusBtn,
+      h('button',{class:'btn small',type:'button',onclick:()=>wrap.querySelectorAll('details').forEach(x=>x.open=true)},'Buka semua'),
+      h('button',{class:'btn small',type:'button',onclick:()=>wrap.querySelectorAll('details').forEach(x=>x.open=false)},'Tutup semua')),
+    h('div',{class:'row',style:'margin:4px 0 2px'},prog),
+    h('div',{class:'bar',style:'margin-bottom:12px'},bar),
+    sec('\u{1F3AF}\u00a0\u00a0Apa yang keluar di mid test', mdToDom(d.intro), true, 'mc-intro'));
+  for (const se of d.sessions){
+    const weak = se.score < 70;
+    const cb = h('input',{type:'checkbox',checked:!!S.materi[key(se.n)],onchange:e=>{
+      if (e.target.checked){ S.materi[key(se.n)] = Date.now(); bumpDay(); } else delete S.materi[key(se.n)]; save(); upd(); det.classList.toggle('mdone', e.target.checked); }});
+    const det = h('details',{class:'mcard msess' + (S.materi[key(se.n)]?' mdone':'')});
+    det.append(
+      h('summary',null,
+        h('span',{class:'msn'},String(se.n)),
+        h('span',{class:'mst'}, se.title),
+        h('span',{class:'chip'}, se.lo),
+        h('span',{class:'chip ' + (weak?'bad':'ok')}, (weak?'Lemah ':'Kuat ') + se.score + '%')),
+      h('div',{class:'mbody'},
+        mdToDom(se.md),
+        h('h3',{class:'mh'},'Tes cepat (klik kartu untuk membalik)'),
+        h('div',{class:'mgrid'}, ...se.quick.map(q => midFlip(q.q, q.a))),
+        h('label',{class:'topic',style:'margin-top:12px'},cb,h('span',null,'Gua sudah paham sesi ini'))));
+    wrap.append(det);
+  }
+  const checks = d.checks.map(c => {
+    const inp = h('input',{type:'text',inputmode:'decimal',placeholder:'Jawaban lu','aria-label':c.q});
+    const out = h('span',{class:'mres'});
+    const go = () => {
+      const v = midNum(inp.value);
+      if (!inp.value.trim() || isNaN(v)){ out.textContent = 'Isi angka dulu'; out.className = 'mres warn'; return; }
+      const ok = Math.abs(v - c.ans) <= Math.abs(c.ans) * 0.01;
+      out.textContent = ok ? 'Benar ✓' : 'Belum tepat. Jawaban: ' + c.ans.toLocaleString('id-ID') + (c.unit==='%'?'%':(c.unit==='$'?' dolar':' unit'));
+      out.className = 'mres ' + (ok?'ok':'bad');
+      if (ok){ S.materi['pdbmid-hitung'] = Date.now(); bumpDay(); save(); }
+    };
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+    inp.addEventListener('input', () => { out.textContent = ''; });
+    return h('div',{class:'mcheck'}, h('div',null,c.q), h('div',{class:'row'}, inp, h('button',{class:'btn small',type:'button',onclick:go},'Cek'), out));
+  });
+  wrap.append(
+    sec('\u{1F9EE}\u00a0\u00a0Hitungan yang wajib bisa', [h('div',{class:'mchecks'}, h('h3',{class:'mh',style:'margin-top:0'},'Coba hitung dulu (titik ribuan dan koma desimal boleh)'), ...checks), mdToDom(d.hitung)], false),
+    sec('\u{1F500}\u00a0\u00a0Tabel kontras (sering jadi pengecoh)', h('div',{class:'mgrid'}, ...d.kontras.map(k => midFlip('**' + k.a + '** vs **' + k.b + '**?', k.key))), false),
+    sec('\u{1F524}\u00a0\u00a0Akronim hafalan', h('div',{class:'mgrid'}, ...d.akronim.map(k => midFlip('**' + k.front + '**', k.back))), false),
+    sec('\u{270D}\u00a0\u00a0Latihan soal', h('ol',{class:'mlat'}, ...d.latihan.map(q => {
+      const a = h('div',{class:'mq-ans',hidden:true}, inl(q.a));
+      const b = h('button',{class:'btn small',type:'button'},'Lihat kunci');
+      b.onclick = () => { a.hidden = !a.hidden; b.textContent = a.hidden ? 'Lihat kunci' : 'Sembunyikan'; };
+      return h('li',null, h('div',null, inl(q.q)), b, a);
+    })), false),
+    sec('\u{1F4C5}\u00a0\u00a0Rencana belajar malam ini', mdToDom(d.rencana), false));
+  upd();
+  return wrap;
 }
 
 (async function boot(){
