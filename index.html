@@ -421,6 +421,23 @@ nav button[aria-current="page"]{background:var(--accent);color:var(--accent-ink)
 @media (max-width:820px){.cat-wrap{grid-template-columns:1fr}.cat-side{display:none}.cat-sel{display:block}}
 @media (max-width:640px){.hxp{display:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+.haf-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.haf-tools select{max-width:100%}
+.haf-grp{margin:22px 0 8px}
+.haf-grp h3{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin:0 0 6px}
+.haf-grp h3 small{font-size:.8rem;color:var(--muted);font-weight:600}
+.haf-card{border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:12px 14px;margin:10px 0;background:var(--surface);transition:border-color .15s,opacity .15s}
+.haf-card.done{border-color:var(--ok)}
+.haf-card.done .haf-q strong{opacity:.75}
+.haf-q{display:flex;gap:10px;align-items:flex-start}
+.haf-q strong{flex:1;font-size:1rem}
+.haf-star{flex:0 0 auto;color:#f59e0b;font-size:.85rem;font-weight:700}
+.haf-ck{flex:0 0 auto;display:flex;gap:6px;align-items:center;font-size:.85rem;color:var(--muted);cursor:pointer;white-space:nowrap}
+.haf-a{margin-top:8px}
+.haf-a .md > :first-child{margin-top:0}
+.haf-tip{margin-top:8px;padding:8px 10px;border-radius:10px;background:var(--accent-soft);font-size:.9rem}
+.haf-show{margin-top:8px}
+.haf-nalar li{margin:4px 0}
 </style>
 
 </head>
@@ -477,7 +494,7 @@ const LET = ['A','B','C','D','E','F'];
 /* ================= State / storage ================= */
 const KEY = 'belajar-ujian.v1';
 let storageOK = true;
-function freshState(){ return { mcq:{}, cards:{}, essay:{}, materi:{}, exams:[], days:{}, newToday:{date:'',count:0}, settings:{newPerDay:20}, exported:0, studyMs:{}, tasks:{}, timer:{running:false,acc:0,t:0,auto:false} }; }
+function freshState(){ return { mcq:{}, cards:{}, essay:{}, materi:{}, hafal:{}, exams:[], days:{}, newToday:{date:'',count:0}, settings:{newPerDay:20}, exported:0, studyMs:{}, tasks:{}, timer:{running:false,acc:0,t:0,auto:false} }; }
 let S = freshState();
 function loadState(){
   try {
@@ -512,6 +529,7 @@ const COURSE_META = []; function registerCourses(a){ COURSE_META.push(...a); }
 const MATERI = []; function registerMateri(a){ MATERI.push(...a); }
 const TASKS = []; function registerTasks(a){ TASKS.push(...a); }
 const CATATAN = []; function registerCatatan(a){ CATATAN.push(...a); }
+const HAFALAN = []; function registerHafalan(d){ HAFALAN.push(d); }
 const ALL_KEY = '*', ALL_LABEL = 'Semua mata kuliah';
 let COURSES = {}, ALL = null;
 function newCourse(name, meta){ return { name, key:name, meta:meta||null, mcq:[], cards:[], essay:[], materi:[] }; }
@@ -628,6 +646,7 @@ const ROUTES = [
   ['tasks', 'Tugas', viewTasks],
   ['materi', 'Materi', viewMateri],
   ['catatan', 'Catatan Winston', viewCatatan],
+  ['hafalan', 'Hafalan', viewHafalan],
   ['quiz', 'Quiz', viewQuiz],
   ['review', 'Review Quiz', viewReview],
   ['exam', 'Simulasi Ujian', viewExam],
@@ -1415,6 +1434,61 @@ function viewCatatan(){
   const on = document.querySelector('.cat-item.on'); if (on) on.scrollIntoView({block:'nearest'});
 }
 
+/* ================= Hafalan ================= */
+let hafCourse = null, hafTest = false, hafFilter = 'all';
+function viewHafalan(){
+  const root = h('div');
+  root.append(h('h1',null,'Hafalan'), h('p',{class:'sub'},'Hal yang harus dihafal karena tidak bisa dinalar: daftar, istilah, angka, dan urutan pola. Sisanya bisa lu nalar dari prinsipnya saat ujian.'));
+  if (!HAFALAN.length){ root.append(h('div',{class:'card'},'Daftar hafalan belum termuat.')); mount(root); return; }
+  if (!hafCourse || !HAFALAN.some(d => d.course === hafCourse)) hafCourse = HAFALAN[0].course;
+  const d = HAFALAN.find(x => x.course === hafCourse);
+  const all = d.groups.flatMap(g => g.items);
+  const isDone = it => !!(S.hafal && S.hafal[it.id]);
+  const prog = h('div',{class:'muted',style:'font-size:.85rem'});
+  const bar = h('i');
+  const updProg = () => {
+    const n = all.filter(isDone).length, np = all.filter(it => it.p).length, npd = all.filter(it => it.p && isDone(it)).length;
+    prog.textContent = n + ' dari ' + all.length + ' sudah hafal · prioritas ⭐ ' + npd + '/' + np;
+    bar.style.width = Math.round(n*100/all.length) + '%';
+    for (const el of document.querySelectorAll('.haf-grp')){
+      const g = d.groups[+el.dataset.g]; const sm = el.querySelector('h3 small');
+      if (g && sm) sm.textContent = g.items.filter(isDone).length + '/' + g.items.length + ' hafal';
+    }
+  };
+  const tools = h('div',{class:'haf-tools'},
+    HAFALAN.length > 1 ? h('select',{'aria-label':'Mata kuliah',onchange:e=>{ hafCourse = e.target.value; render(); }}, HAFALAN.map(x => h('option',{value:x.course,selected:x.course===hafCourse}, cLabel(x.course)))) : h('span',{class:'chip'}, cLabel(d.course)),
+    h('select',{'aria-label':'Saring',onchange:e=>{ hafFilter = e.target.value; render(); }},
+      h('option',{value:'all',selected:hafFilter==='all'},'Semua'),
+      h('option',{value:'todo',selected:hafFilter==='todo'},'Belum hafal saja'),
+      h('option',{value:'star',selected:hafFilter==='star'},'Prioritas ⭐ saja')),
+    h('button',{class:'btn small' + (hafTest?' primary':''),type:'button','aria-pressed':String(hafTest),onclick:()=>{ hafTest = !hafTest; render(); }}, hafTest ? 'Mode tes: nyala (jawaban ditutup)' : 'Mode tes (tutup jawaban)'));
+  const keep = it => hafFilter === 'todo' ? !isDone(it) : hafFilter === 'star' ? !!it.p : true;
+  const card = it => {
+    const el = h('div',{class:'haf-card' + (isDone(it)?' done':'')});
+    const cb = h('input',{type:'checkbox',checked:isDone(it),onchange:e=>{
+      S.hafal = S.hafal || {};
+      if (e.target.checked){ S.hafal[it.id] = Date.now(); bumpDay(); } else delete S.hafal[it.id];
+      save(); el.classList.toggle('done', e.target.checked); updProg(); questTick(); }});
+    const ans = h('div',{class:'haf-a',hidden:hafTest}, mdToDom(it.a), it.tip ? h('div',{class:'haf-tip'}, '💡 ', inl(it.tip)) : null);
+    const show = hafTest ? h('button',{class:'btn small haf-show',type:'button',onclick:()=>{ ans.hidden = !ans.hidden; show.textContent = ans.hidden ? 'Lihat jawaban' : 'Tutup jawaban'; }}, 'Lihat jawaban') : null;
+    el.append(h('div',{class:'haf-q'}, it.p ? h('span',{class:'haf-star',title:'Prioritas'},'⭐') : null, h('strong',null,inl(it.q)), h('label',{class:'haf-ck'}, cb, 'Hafal')), show, ans);
+    return el;
+  };
+  root.append(h('div',{class:'card'}, mdToDom(d.intro), prog, h('div',{class:'bar'}, bar), tools));
+  if (d.nalar && d.nalar.length){
+    root.append(h('details',{class:'card haf-nalar'}, h('summary',null, h('strong',null,'✅ Cukup dinalar, tidak usah dihafal (' + d.nalar.length + ')')),
+      h('ul',null, d.nalar.map(t => h('li',null,inl(t))))));
+  }
+  let shown = 0;
+  d.groups.forEach((g, gi) => {
+    const items = g.items.filter(keep); if (!items.length) return; shown += items.length;
+    root.append(h('section',{class:'haf-grp','data-g':String(gi)}, h('h3',null, g.title, h('small')), ...items.map(card)));
+  });
+  if (!shown) root.append(h('div',{class:'card'}, hafFilter === 'todo' ? 'Semua sudah hafal. Mantap! Coba nyalakan mode tes untuk mengulang.' : 'Tidak ada item untuk saringan ini.'));
+  mount(root);
+  updProg();
+}
+
 /* ================= Pengaturan ================= */
 function viewSettings(){
   const root = h('div');
@@ -1696,6 +1770,7 @@ function calcXp(){
   for (const k of Object.values(S.cards)) x += ((k.reps||0) + (k.lapses||0))*4;
   for (const e of Object.values(S.essay)) x += (e.n||0)*20;
   x += Object.keys(S.materi).length*15;
+  x += Object.keys(S.hafal||{}).length*5;
   for (const ms of Object.values(S.studyMs)) x += Math.floor(ms/60000);
   return x;
 }
@@ -1962,6 +2037,9 @@ function renderMidCards(m){
   }
   await loadScript('bank/tasks.js');
   await loadScript('bank/catatan.js');
+  if (ok && Array.isArray(window.HAFALAN_FILES)){
+    for (const f of window.HAFALAN_FILES) await loadScript('bank/' + f);
+  }
   if (ok && Array.isArray(window.MATERI_FILES)){
     for (const f of window.MATERI_FILES) await loadScript('bank/' + f);
   }
